@@ -1,0 +1,23 @@
+version: '3.7'
+
+service:
+  backend-server:
+    build:
+      context: .
+      dockerfile: dockerfile
+    volumes:
+      - ./src:/letsFootball/src
+    ports:
+      - 3000:3000
+    env_file:
+      - ./.env.dev
+
+  backend-database:
+    platform: linux/x86_64
+    image: mysql:latest
+    enviroment:
+      MYSQL_DATABASE: 'letsFootball-database'
+      MYSQL_ROOT_PASSWORD: '1545'
+      TZ: 'Asia/Seoul'
+    ports:
+      - 3306:3306
