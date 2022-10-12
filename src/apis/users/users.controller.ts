@@ -13,17 +13,15 @@ import { CreateUserInput } from './dto/createUserInput';
 import { UpdateUserInput } from './dto/updateUserInput';
 import {
   ApiBearerAuth,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiProperty,
-  ApiResponse,
-  ApiResponseProperty,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
+import { User404Error } from 'src/common/Error.type';
 
-@ApiTags('User')
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -38,17 +36,23 @@ export class UsersController {
     return this.usersService.create(createUserInput);
   }
 
+  /**
+   * @Summary 유저 조회 API
+   * @param email
+   * @returns User
+   */
   @Get()
-  @ApiOperation({ description: '유저 조회 API', summary: '유저 조회' })
-  @ApiBearerAuth('access_token')
+  @ApiOperation({
+    description: '유저 이메일을 인자로 받아 유저 정보를 반환합니다.',
+    summary: '유저 조회',
+  })
+  @ApiBearerAuth()
   @ApiOkResponse({
     type: User,
-    status: 201,
     description: '유저 조회에 성공하였습니다.',
   })
-  @ApiUnauthorizedResponse({
-    type: User,
-    status: 404,
+  @ApiNotFoundResponse({
+    type: User404Error,
     description: '존재하지 않는 이메일입니다.',
   })
   async findOne(@Query('email') email: string): Promise<User> {

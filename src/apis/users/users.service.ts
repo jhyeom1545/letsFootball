@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserInput } from './dto/createUserInput';
@@ -27,13 +31,12 @@ export class UsersService {
   }
 
   async findOne({ email }: { email: string }): Promise<User> {
-    console.log('이거뭐야', email);
     const result = await this.usersRepository.findOne({
       where: { email },
     });
-    console.log('result', result);
+    // 이메일 존재하는지 확인
     if (!result) {
-      throw new ConflictException('존재하지 않는 이메일입니다.');
+      throw new NotFoundException('존재하지 않는 이메일입니다.');
     }
     return result;
   }
