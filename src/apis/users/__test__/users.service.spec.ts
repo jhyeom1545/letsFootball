@@ -63,7 +63,7 @@ describe('UsersService', () => {
       jest.spyOn(usersRepository, 'findOne').mockResolvedValue(user404Error);
       const result2 = jest.spyOn(usersRepository, 'findOne').getMockName();
       const result = await usersService.findOne({ email: 'inValidEmail' });
-      console.log(result2);
+      console.log(result2); //
       expect(result).toEqual(user404Error);
     });
   });
