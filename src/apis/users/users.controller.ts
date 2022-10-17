@@ -41,7 +41,7 @@ export class UsersController {
    * @param email
    * @returns User
    */
-  @Get()
+  @Get(':email')
   @ApiOperation({
     description: '유저 이메일을 인자로 받아 유저 정보를 반환합니다.',
     summary: '유저 조회',
@@ -63,13 +63,16 @@ export class UsersController {
     return result;
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserInput) {
-    return this.usersService.update(+id, updateUserDto);
+  @Patch()
+  update(
+    @Param('email') email: string,
+    @Body() updateUserDto: UpdateUserInput,
+  ) {
+    return this.usersService.update(email, updateUserDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @Delete()
+  remove(@Param('email') email: string) {
+    return this.usersService.remove({ email });
   }
 }

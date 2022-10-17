@@ -41,11 +41,14 @@ export class UsersService {
     return result;
   }
 
-  update(id: number, updateUserDto: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  update(email: string, updateUserDto: UpdateUserInput) {
+    return `This action updates a #${email} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove({ email }: { email: string }): Promise<boolean> {
+    const result = await this.usersRepository.softDelete({
+      email: email,
+    });
+    return result.affected ? true : false;
   }
 }
