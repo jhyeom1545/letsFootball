@@ -10,3 +10,14 @@ export class User404Error {
   @ApiProperty({ example: 'Not Found' })
   error: string;
 }
+
+export class User409Error {
+  @ApiProperty({ example: 409 })
+  statusCode: number;
+
+  @ApiProperty({ example: '이미 존재하는 email 입니다.' })
+  message: string;
+
+  @ApiProperty({ example: 'Conflict' })
+  error: string;
+}

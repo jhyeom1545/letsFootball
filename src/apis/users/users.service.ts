@@ -1,13 +1,10 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserInput } from './dto/createUserInput';
 import { UpdateUserInput } from './dto/updateUserInput';
 import { User } from './entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -15,19 +12,25 @@ export class UsersService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
   ) {}
-  async create(createUserInput: CreateUserInput): Promise<User> {
+  async create({ createUserInput }: { createUserInput: CreateUserInput }): Promise<User> {
     const { email, name, password } = createUserInput;
+    const points = 500;
+
+    // 비밀번호 암호화 하기
+    const hashedPassword = await bcrypt.hash(password, Number(process.env.BCRYPT_SALT));
 
     // email 존재하는지 확인하기
-    const isValidEmail = this.usersRepository.findOne({
+    const isValidEmail = await this.usersRepository.findOne({
       where: { email: email },
     });
+    if (isValidEmail) throw new ConflictException('이미 존재하는 email 입니다.');
 
-    if (!isValidEmail) {
-      throw new ConflictException('email이 존재합니다.');
-    }
-
-    return await this.usersRepository.save({ email, name, password });
+    return await this.usersRepository.save({
+      email,
+      name,
+      password: hashedPassword,
+      points,
+    });
   }
 
   async findOne({ email }: { email: string }): Promise<User> {
@@ -35,20 +38,21 @@ export class UsersService {
       where: { email },
     });
     // 이메일 존재하는지 확인
-    if (!result) {
-      throw new NotFoundException('존재하지 않는 이메일입니다.');
-    }
+    if (!result) throw new NotFoundException('존재하지 않는 이메일입니다.');
     return result;
   }
 
-  update(email: string, updateUserDto: UpdateUserInput) {
-    return `This action updates a #${email} user`;
+  async update({ email, updateUserDto }: { email: string; updateUserDto: UpdateUserInput }) {
+    const user = await this.findOne({ email });
+    return await this.usersRepository.save({
+      ...user,
+      ...updateUserDto,
+    });
   }
 
   async remove({ email }: { email: string }): Promise<boolean> {
-    const result = await this.usersRepository.softDelete({
-      email: email,
-    });
+    const user = await this.findOne({ email });
+    const result = await this.usersRepository.softDelete({ email: user.email });
     return result.affected ? true : false;
   }
 }

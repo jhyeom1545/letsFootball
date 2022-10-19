@@ -17,12 +17,10 @@ describe('UsersService', () => {
   let user404Error: User404Error;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        UsersService,
-        { provide: 'UserRepository', useFactory: mockRepository },
-      ],
+    const module = await Test.createTestingModule({
+      providers: [UsersService, { provide: 'UserRepository', useFactory: mockRepository }],
     }).compile();
+
     usersService = module.get<UsersService>(UsersService);
     usersRepository = module.get('UserRepository') as MockRepository<User>;
 
@@ -52,9 +50,7 @@ describe('UsersService', () => {
       expect(usersService.findOne).toBeDefined();
     });
     it('유효한 email', async () => {
-      const spyGet = jest
-        .spyOn(usersRepository, 'findOne')
-        .mockResolvedValue(user);
+      const spyGet = jest.spyOn(usersRepository, 'findOne').mockResolvedValue(user);
       const result = await usersService.findOne({ email: user.email });
       expect(spyGet).toBeCalledTimes(1);
       expect(result).toEqual(user);

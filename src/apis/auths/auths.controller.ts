@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthsService } from './auths.service';
 import { CreateAuthDto } from './dto/createAuth.dto';
@@ -19,7 +11,7 @@ export class AuthsController {
 
   @Post('login')
   logoin(@Body() createAuthDto: CreateAuthDto) {
-    return this.authsService.login();
+    return this.authsService.login({ createAuthDto });
   }
 
   @Post('logout')
