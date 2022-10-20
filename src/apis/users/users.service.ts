@@ -17,7 +17,7 @@ export class UsersService {
     const points = 500;
 
     // 비밀번호 암호화 하기
-    const hashedPassword = await bcrypt.hash(password, Number(process.env.BCRYPT_SALT));
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // email 존재하는지 확인하기
     const isValidEmail = await this.usersRepository.findOne({
@@ -42,11 +42,11 @@ export class UsersService {
     return result;
   }
 
-  async update({ email, updateUserDto }: { email: string; updateUserDto: UpdateUserInput }) {
+  async update({ email, updateUserInput }: { email: string; updateUserInput: UpdateUserInput }) {
     const user = await this.findOne({ email });
     return await this.usersRepository.save({
       ...user,
-      ...updateUserDto,
+      ...updateUserInput,
     });
   }
 

@@ -1,21 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Param, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthsService } from './auths.service';
-import { CreateAuthDto } from './dto/createAuth.dto';
-import { UpdateAuthDto } from './dto/updateAuth';
+import { LoginInput } from './dto/loginInput.dto';
+import { LogoutInput } from './dto/logoutInput';
 
 @ApiTags('Auth')
 @Controller()
 export class AuthsController {
-  constructor(private readonly authsService: AuthsService) {}
+  constructor(
+    private readonly authsService: AuthsService, //
+  ) {}
 
   @Post('login')
-  logoin(@Body() createAuthDto: CreateAuthDto) {
-    return this.authsService.login({ createAuthDto });
+  logoin(
+    @Body() loginInput: LoginInput,
+    @Res({ passthrough: true }) res: Response, //
+  ) {
+    return this.authsService.login({ loginInput, res });
   }
 
   @Post('logout')
-  logout(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
+  logout(@Param('id') id: string, @Body() logoutInput: LogoutInput) {
     return this.authsService.logout();
   }
 }

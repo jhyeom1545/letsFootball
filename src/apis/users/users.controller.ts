@@ -4,6 +4,7 @@ import { CreateUserInput } from './dto/createUserInput';
 import { UpdateUserInput } from './dto/updateUserInput';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiConflictResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -24,6 +25,7 @@ export class UsersController {
    * @returns User
    */
   @Post()
+  // @ApiBody({ type: User })
   @ApiOperation({
     description: 'email, password, name을 입력받아 회원가입을 진행합니다',
     summary: '유저 회원 가입',
@@ -56,11 +58,12 @@ export class UsersController {
    * @returns User
    */
   @Patch(':email')
+  @ApiBody({ type: User })
   @ApiOperation({ description: '유저 이메일을 인자로 받아 유저 정보를 반환합니다.', summary: '유저 정보 수정' })
   @ApiOkResponse({ type: User, description: '유저 정보가 수정되었습니다' })
   @ApiNotFoundResponse({ type: User404Error, description: '존재하지 않는 이메일입니다.' })
-  update(@Param('email') email: string, @Body() updateUserDto: UpdateUserInput) {
-    return this.usersService.update({ email, updateUserDto });
+  update(@Param('email') email: string, @Body() updateUserInput: UpdateUserInput) {
+    return this.usersService.update({ email, updateUserInput });
   }
 
   @Delete(':email')
