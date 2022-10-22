@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString, Matches, MaxLength, MinLength } from 'class-validator';
 
-export class LoginInput {
-  @ApiProperty({ description: '이메일', example: 'test@mail.com' })
+export class CreateUserInput {
   @IsEmail()
   @IsNotEmpty()
-  readonly email: string;
+  @ApiProperty({ description: '유저 아이디' })
+  email: string;
 
   @ApiProperty({
     description: '비밀번호 (8~20글자 영문/숫자)',
@@ -14,9 +14,13 @@ export class LoginInput {
   @IsString()
   @MinLength(8)
   @MaxLength(20)
-  @Matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d~!@#$%^&*()+|=]{8,20}$/, {
+  @Matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d~!@#$%^&*()+|=]{8,16}$/, {
     message: '비밀번호 양식에 맞게 작성하세요.',
   })
   @IsNotEmpty()
-  readonly password: string;
+  @ApiProperty({ description: '유저 패스워드' })
+  password: string;
+
+  @ApiProperty()
+  name: string;
 }

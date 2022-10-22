@@ -1,8 +1,11 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { Response } from 'express';
+import { ICurrentUser } from 'src/common/currentUser';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
+import { LoginInput } from './dto/loginInput.dto';
 
 @Injectable()
 export class AuthsService {
@@ -11,7 +14,7 @@ export class AuthsService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login({ loginInput, res }) {
+  async login({ loginInput, res }: { loginInput: LoginInput; res: Response }): Promise<string> {
     const { email, password } = loginInput;
     // Id 확인
     const user = await this.usersService.findOne({ email });
@@ -20,34 +23,36 @@ export class AuthsService {
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) throw new ForbiddenException('비밀번호가 틀립니다.');
 
-    // refreshToken 넣기
+    // refreshToken 발급
     this.setRefreshToken({ user, res });
-    return this.getAccessToken({ user });
+
+    const currentUser = {
+      email: user.email,
+      createdAt: user.createdAt,
+    };
+
+    // accessToken 발급
+    return this.getAccessToken({ currentUser });
   }
 
-  getAccessToken({ user }: { user: User }): string {
+  async getAccessToken({ currentUser }: { currentUser: ICurrentUser }): Promise<string> {
     const accessKey = process.env.JWT_ACCESS_KEY;
-    const expireTime = process.env.JWT_ACCESS_EXPIRATION_TIME;
-    return this.jwtService.sign(
-      { email: user.email, createdAt: user.createdAt },
+    const expireTime = process.env.JWT_ACCESS_EXPIRATION;
+    return await this.jwtService.sign(
+      { email: currentUser.email, createdAt: currentUser.createdAt },
       { secret: accessKey, expiresIn: expireTime },
     );
   }
 
-  setRefreshToken({ user, res }) {
+  setRefreshToken({ user, res }: { user: User; res: Response }): void {
     const refreshKey = process.env.JWT_REFRESH_KEY;
-    const expireTime = process.env.JWT_REFRESH_EXPIRATION_TIME;
+    const expireTime = process.env.JWT_REFRESH_EXPIRATION;
+    console.log(expireTime);
     const refreshToken = this.jwtService.sign(
       { email: user.email, createdAt: user.createdAt },
       { secret: refreshKey, expiresIn: expireTime },
     );
     res.setHeader('Access-Control-Allow-Origin', `${process.env.ALLOW_ORIGIN_URL}`);
     res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; Path=/; HttpOnly`);
-
-    return 'return';
-  }
-
-  logout() {
-    return 'logout API';
   }
 }
