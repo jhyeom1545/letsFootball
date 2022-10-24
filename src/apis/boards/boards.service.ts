@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
 import { CreateBoardInput } from './dto/createBoard.input';
+import { DeleteBoardInput } from './dto/deleteBoard.input';
 import { UpdateBoardDto } from './dto/updateBoard.input';
 import { Board } from './entities/board.entity';
 
@@ -39,7 +40,18 @@ export class BoardsService {
     return `This action updates a #${id} board`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} board`;
+  async remove({ deleteBoardInput }: { deleteBoardInput: DeleteBoardInput }): Promise<boolean> {
+    const { email, id } = deleteBoardInput;
+    // 입력받은 유저가 유효한지 조회합니다.
+    const user = await this.usersService.findOne({ email });
+
+    // 입력받은 게시글이 유효한지 조회합니다.
+    const board = await this.findOneById({ id });
+
+    // 조회한 유저가 게시글 작성자와 동일한지 확인합니다.
+    if (user.email !== board.email) throw new ForbiddenException('본인의 게시글만 삭제가 가능합니다.');
+
+    const result = await this.boardsRepository.softDelete({ id: board.id });
+    return result.affected ? true : false;
   }
 }

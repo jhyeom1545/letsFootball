@@ -3,6 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -10,9 +11,10 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { JwtAccessGuard } from 'src/common/auth/guard/jwtAccess.guard';
-import { AuthError401, BoardError404, UserError404 } from 'src/common/type/error.type';
+import { AuthError401, BoardError403, BoardError404, UserError404 } from 'src/common/type/error.type';
 import { BoardsService } from './boards.service';
 import { CreateBoardInput } from './dto/createBoard.input';
+import { DeleteBoardInput } from './dto/deleteBoard.input';
 import { UpdateBoardDto } from './dto/updateBoard.input';
 import { Board } from './entities/board.entity';
 
@@ -66,8 +68,18 @@ export class BoardsController {
     return this.boardsService.update(+id, updateBoardDto);
   }
 
+  /**
+   * @summery 게시글 삭제
+   * @argument id
+   * @returns boolean
+   */
   @Delete('board/:id')
-  remove(@Param('id') id: string) {
-    return this.boardsService.remove(+id);
+  @ApiOperation({ description: '게시글 id를 인자로 받아 게시글을 삭제합니다.', summary: '게시글 삭제' })
+  @ApiOkResponse({ description: 'true' })
+  @ApiNotFoundResponse({ type: BoardError404, description: '해당 게시글이 존재하지 않을 때' })
+  @ApiForbiddenResponse({ type: BoardError403, description: '본인이 작성한 게시글이 아닐 때' })
+  @ApiUnauthorizedResponse({ type: AuthError401, description: '로그인한 사용자가 아닐 때' })
+  remove(@Body() deleteBoardInput: DeleteBoardInput): Promise<boolean> {
+    return this.boardsService.remove({ deleteBoardInput });
   }
 }
