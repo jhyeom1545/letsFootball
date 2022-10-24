@@ -1,33 +1,66 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { JwtAccessGuard } from 'src/common/auth/guard/jwtAccess.guard';
+import { AuthError401, BoardError404, UserError404 } from 'src/common/type/error.type';
 import { BoardsService } from './boards.service';
-import { CreateBoardDto } from './dto/createBoard.input';
+import { CreateBoardInput } from './dto/createBoard.input';
 import { UpdateBoardDto } from './dto/updateBoard.input';
+import { Board } from './entities/board.entity';
 
-@Controller('boards')
+@ApiTags('Board')
+@Controller('api/')
 export class BoardsController {
   constructor(private readonly boardsService: BoardsService) {}
 
-  @Post()
-  create(@Body() createBoardDto: CreateBoardDto) {
-    return this.boardsService.create(createBoardDto);
+  /**
+   * @summery 게시글 생성 API
+   * @argument createBoardInput
+   * @returns Board
+   */
+  @Post('board')
+  @UseGuards(JwtAccessGuard)
+  @ApiOperation({ description: 'title, content, email을 인자로 받아 게시글을 생성합니다.', summary: '게시글 생성' })
+  @ApiBearerAuth('access-token')
+  @ApiCreatedResponse({ type: Board, description: '게시글 작성 성공' })
+  @ApiNotFoundResponse({ type: UserError404, description: '조회하는 이메일이 없을 때' })
+  @ApiUnauthorizedResponse({ type: AuthError401, description: '로그인 상태가 아닐 때' })
+  create(@Body() createBoardInput: CreateBoardInput): Promise<Board> {
+    return this.boardsService.create({ createBoardInput });
   }
 
-  @Get()
+  @Get('boards')
   findAll() {
     return this.boardsService.findAll();
   }
 
-  @Get(':id')
+  /**
+   * @summery 게시글 조회
+   * @argument id
+   * @returns Board
+   */
+  @Get('board/:id')
+  @ApiOperation({ description: 'id를 인자로 받아 게시글을 조회합니다.', summary: '게시글 조회' })
+  @ApiOkResponse({ type: Board, description: '게시글 조회 성공' })
+  @ApiNotFoundResponse({ type: BoardError404, description: '해당 게시물이 존재하지 않을 때' })
   findOne(@Param('id') id: string) {
-    return this.boardsService.findOne(+id);
+    return this.boardsService.findOneById({ id });
   }
 
-  @Patch(':id')
+  @Patch('board/:id')
   update(@Param('id') id: string, @Body() updateBoardDto: UpdateBoardDto) {
     return this.boardsService.update(+id, updateBoardDto);
   }
 
-  @Delete(':id')
+  @Delete('board/:id')
   remove(@Param('id') id: string) {
     return this.boardsService.remove(+id);
   }

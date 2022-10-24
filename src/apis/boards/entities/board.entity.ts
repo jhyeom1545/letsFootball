@@ -1,16 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
+@Entity()
 export class Board {
-  @ApiProperty({ example: '123' })
+  @ApiProperty({ example: '6020c315-c982-496e-bb50-f7340c485f1f' })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty({ example: '123' })
+  @Column()
+  @ApiProperty({ example: '게시글 제목' })
   title: string;
 
-  @ApiProperty({ example: '123' })
+  @Column()
+  @ApiProperty({ example: '게시글 내용' })
   content: string;
+
+  @Column()
+  @ApiProperty({ example: 'jhyeom1545@gmail.com' })
+  email: string;
 
   @ApiProperty({ example: null })
   @DeleteDateColumn()

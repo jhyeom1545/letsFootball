@@ -27,6 +27,7 @@ export class CreateUserInput {
   })
   password: string;
 
+  @IsString()
   @ApiProperty({
     description: '유저 이름', //
     example: '홍길동',

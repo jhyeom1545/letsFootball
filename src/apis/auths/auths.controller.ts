@@ -24,6 +24,7 @@ export class AuthsController {
   ) {}
 
   @Post('login')
+  @ApiOperation({ description: 'email, password를 인자로 받아 access-token을 받습니다.', summary: '로그인' })
   @ApiBody({ type: LoginInput })
   @ApiCreatedResponse({ type: LoginUserResponse, description: '로그인 성공' })
   @ApiNotFoundResponse({ type: UserError404, description: '조회하는 이메일이 없을 때' })

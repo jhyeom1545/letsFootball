@@ -19,7 +19,7 @@ import { UpdateUserResponse, removeUserResponse } from 'src/common/type/response
 import { AuthError401, UserError404, UserError409 } from 'src/common/type/error.type';
 
 @ApiTags('User')
-@Controller({ path: 'user', version: 'v1' })
+@Controller({ path: 'api/', version: 'v1' })
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -28,7 +28,7 @@ export class UsersController {
    * @argument createUserInput
    * @returns User
    */
-  @Post()
+  @Post('user')
   @ApiOperation({
     description: 'email, password, name을 입력받아 회원가입을 진행합니다',
     summary: '유저 회원 가입',
@@ -45,7 +45,7 @@ export class UsersController {
    * @param email
    * @returns User
    */
-  @Get(':email')
+  @Get('user/:email')
   @ApiOperation({ description: '유저 이메일을 인자로 받아 유저 정보를 반환합니다.', summary: '유저 조회' })
   @ApiOkResponse({ type: User, description: '유저 조회에 성공' })
   @ApiNotFoundResponse({ type: UserError404, description: '조회하는 이메일이 없을 때' })
@@ -59,7 +59,7 @@ export class UsersController {
    * @param updateUserInput
    * @returns User
    */
-  @Patch(':email')
+  @Patch('user/:email')
   @UseGuards(JwtAccessGuard)
   @ApiOperation({ description: '유저 이메일을 인자로 받아 유저 정보를 반환합니다.', summary: '유저 정보 수정' })
   @ApiBearerAuth('access-token')
@@ -76,7 +76,7 @@ export class UsersController {
    * @param email
    * @returns boolean
    */
-  @Delete(':email')
+  @Delete('user/:email')
   @UseGuards(JwtAccessGuard)
   @ApiOperation({
     description: '이메일을 인자로 받아 회원 탈퇴를 진행합니다.',

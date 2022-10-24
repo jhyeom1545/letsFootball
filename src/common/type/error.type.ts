@@ -22,6 +22,14 @@ export class UserError409 {
   error: string;
 }
 
+export class BoardError404 {
+  @ApiProperty({ example: 404 })
+  statusCode: number;
+
+  @ApiProperty({ example: '해당 게시글이 존재하지 않습니다.' })
+  message: string;
+}
+
 export class AuthError401 {
   @ApiProperty({ example: 401 })
   statusCode: number;

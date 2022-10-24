@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/swagger';
-import { CreateBoardDto } from './createBoard.input';
+import { CreateBoardInput } from './createBoard.input';
 
-export class UpdateBoardDto extends PartialType(CreateBoardDto) {}
+export class UpdateBoardDto extends PartialType(CreateBoardInput) {}
