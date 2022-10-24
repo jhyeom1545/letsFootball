@@ -4,7 +4,10 @@ import { IsEmail, IsNotEmpty, IsString, Matches, MaxLength, MinLength } from 'cl
 export class CreateUserInput {
   @IsEmail()
   @IsNotEmpty()
-  @ApiProperty({ description: '유저 아이디' })
+  @ApiProperty({
+    description: '유저 아이디', //
+    example: 'jhyeom1545@gmail.com',
+  })
   email: string;
 
   @ApiProperty({
@@ -18,9 +21,15 @@ export class CreateUserInput {
     message: '비밀번호 양식에 맞게 작성하세요.',
   })
   @IsNotEmpty()
-  @ApiProperty({ description: '유저 패스워드' })
+  @ApiProperty({
+    description: '유저 패스워드', //
+    example: 'qwerqwer1234!',
+  })
   password: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: '유저 이름', //
+    example: '홍길동',
+  })
   name: string;
 }

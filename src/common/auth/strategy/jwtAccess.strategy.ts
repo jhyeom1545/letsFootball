@@ -15,7 +15,7 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
 
   async validate(req, payload) {
     const accessToken = await req.headers.authorization.split(' ')[1];
-
+    console.log(accessToken);
     if (!accessToken) throw new UnauthorizedException('액세스 토큰이 없습니다');
 
     return { email: payload.email, createdAt: payload.createdAt };

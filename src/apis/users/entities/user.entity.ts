@@ -3,7 +3,7 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, Upda
 
 @Entity()
 export class User {
-  @ApiProperty({ example: 'jhyeom1545@gmail.com' })
+  @ApiProperty({ example: 'jhyeom1545@gmail.com', default: 'jhyeom1545@gmail.com' })
   @PrimaryColumn({
     unique: true,
   })
@@ -20,6 +20,10 @@ export class User {
   @Column()
   points?: number;
 
+  @ApiProperty({ example: null })
+  @DeleteDateColumn()
+  deletedAt: Date;
+
   @ApiProperty({ example: '2022-10-11T18:47:32.165Z' })
   @CreateDateColumn()
   createdAt: Date;
@@ -27,8 +31,4 @@ export class User {
   @ApiProperty({ example: '2022-10-11T18:47:32.165Z' })
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @ApiProperty({ example: null })
-  @DeleteDateColumn()
-  deletedAt: Date;
 }

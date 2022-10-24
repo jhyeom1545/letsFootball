@@ -25,12 +25,14 @@ export class UsersService {
     });
     if (isValidEmail) throw new ConflictException('이미 존재하는 email 입니다.');
 
-    return await this.usersRepository.save({
+    const result = await this.usersRepository.save({
       email,
       name,
       password: hashedPassword,
       points,
     });
+    delete result.password;
+    return result;
   }
 
   async findOne({ email }: { email: string }): Promise<User> {
@@ -42,12 +44,18 @@ export class UsersService {
     return result;
   }
 
-  async update({ email, updateUserInput }: { email: string; updateUserInput: UpdateUserInput }) {
+  async update({ email, updateUserInput }: { email: string; updateUserInput: UpdateUserInput }): Promise<User> {
     const user = await this.findOne({ email });
-    return await this.usersRepository.save({
+    // 변경할 비밀번호 암호화 하기
+    const hashedPassword = await bcrypt.hash(updateUserInput.password, 10);
+    const result = await this.usersRepository.save({
       ...user,
       ...updateUserInput,
+      password: hashedPassword,
     });
+    // 비밀번호 리턴값에서 제외하기
+    delete result.password;
+    return result;
   }
 
   async remove({ email }: { email: string }): Promise<boolean> {

@@ -3,11 +3,13 @@ import { UsersModule } from './apis/users/users.module';
 import { AuthsModule } from './apis/auths/auths.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { BoardsModule } from './apis/boards/boards.module';
 
 @Module({
   imports: [
-    UsersModule,
     AuthsModule,
+    UsersModule,
+    BoardsModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -23,6 +25,7 @@ import { ConfigModule } from '@nestjs/config';
       logging: true,
       retryAttempts: 20,
     }),
+    BoardsModule,
   ],
 })
 export class AppModule {}

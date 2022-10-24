@@ -32,13 +32,14 @@ export class AuthsService {
     };
 
     // accessToken 발급
-    return this.getAccessToken({ currentUser });
+    const result = await this.getAccessToken({ currentUser });
+    return result;
   }
 
   async getAccessToken({ currentUser }: { currentUser: ICurrentUser }): Promise<string> {
     const accessKey = process.env.JWT_ACCESS_KEY;
     const expireTime = process.env.JWT_ACCESS_EXPIRATION;
-    return await this.jwtService.sign(
+    return this.jwtService.sign(
       { email: currentUser.email, createdAt: currentUser.createdAt },
       { secret: accessKey, expiresIn: expireTime },
     );
@@ -47,7 +48,6 @@ export class AuthsService {
   setRefreshToken({ user, res }: { user: User; res: Response }): void {
     const refreshKey = process.env.JWT_REFRESH_KEY;
     const expireTime = process.env.JWT_REFRESH_EXPIRATION;
-    console.log(expireTime);
     const refreshToken = this.jwtService.sign(
       { email: user.email, createdAt: user.createdAt },
       { secret: refreshKey, expiresIn: expireTime },

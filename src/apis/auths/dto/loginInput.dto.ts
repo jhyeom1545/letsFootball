@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString, Matches, MaxLength, MinLength } from 'class-validator';
 
 export class LoginInput {
-  @ApiProperty({ description: '이메일', example: 'test@mail.com' })
+  @ApiProperty({ description: '이메일', example: 'jhyeom1545@gmail.com' })
   @IsEmail()
   @IsNotEmpty()
   readonly email: string;
