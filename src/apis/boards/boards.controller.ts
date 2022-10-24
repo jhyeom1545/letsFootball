@@ -37,8 +37,14 @@ export class BoardsController {
     return this.boardsService.create({ createBoardInput });
   }
 
+  /**
+   * @summery 게시글 전체 조회
+   * @returns Board[]
+   */
   @Get('boards')
-  findAll() {
+  @ApiOperation({ description: '모든 게시글을 조회합니다.', summary: '게시글 전체 조회' })
+  @ApiOkResponse({ type: Board, description: '게시글 조회 성공' })
+  findAll(): Promise<Board[]> {
     return this.boardsService.findAll();
   }
 
