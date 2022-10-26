@@ -26,7 +26,7 @@ export class BoardError403 {
   @ApiProperty({ example: 403 })
   statusCode: number;
 
-  @ApiProperty({ example: '본인의 게시글만 삭제가 가능합니다.' })
+  @ApiProperty({ example: '본인의 게시글만 접근이 가능합니다.' })
   message: string;
 }
 

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, ValidationPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserInput } from './dto/createUser.Input';
 import { UpdateUserInput } from './dto/updateUser.Input';
@@ -36,7 +36,7 @@ export class UsersController {
   @ApiProperty({ type: CreateUserInput })
   @ApiOkResponse({ type: User, description: '회원가입 성공' })
   @ApiConflictResponse({ type: UserError409, description: '이미 가입된 회원일 때' })
-  create(@Body() createUserInput: CreateUserInput): Promise<User> {
+  create(@Body(ValidationPipe) createUserInput: CreateUserInput): Promise<User> {
     return this.usersService.create({ createUserInput });
   }
 

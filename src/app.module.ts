@@ -4,6 +4,7 @@ import { AuthsModule } from './apis/auths/auths.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { BoardsModule } from './apis/boards/boards.module';
+import { LikesModule } from './likes/likes.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { BoardsModule } from './apis/boards/boards.module';
       retryAttempts: 20,
     }),
     BoardsModule,
+    LikesModule,
   ],
 })
 export class AppModule {}

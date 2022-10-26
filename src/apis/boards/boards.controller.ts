@@ -15,7 +15,7 @@ import { AuthError401, BoardError403, BoardError404, UserError404 } from 'src/co
 import { BoardsService } from './boards.service';
 import { CreateBoardInput } from './dto/createBoard.input';
 import { DeleteBoardInput } from './dto/deleteBoard.input';
-import { UpdateBoardDto } from './dto/updateBoard.input';
+import { UpdateBoardInput } from './dto/updateBoard.input';
 import { Board } from './entities/board.entity';
 
 @ApiTags('Board')
@@ -41,13 +41,14 @@ export class BoardsController {
 
   /**
    * @summery 게시글 전체 조회
+   * @argument page
    * @returns Board[]
    */
-  @Get('boards')
+  @Get('boards/:page')
   @ApiOperation({ description: '모든 게시글을 조회합니다.', summary: '게시글 전체 조회' })
   @ApiOkResponse({ type: Board, description: '게시글 조회 성공' })
-  findAll(): Promise<Board[]> {
-    return this.boardsService.findAll();
+  findAll(@Param('page') page: number): Promise<Board[]> {
+    return this.boardsService.findAll({ page });
   }
 
   /**
@@ -63,9 +64,20 @@ export class BoardsController {
     return this.boardsService.findOneById({ id });
   }
 
+  /**
+   * @summery 게시글 수정
+   * @argument updateBoardInput
+   * @returns Board
+   */
   @Patch('board/:id')
-  update(@Param('id') id: string, @Body() updateBoardDto: UpdateBoardDto) {
-    return this.boardsService.update(+id, updateBoardDto);
+  // @UseGuards(JwtAccessGuard)
+  @ApiOperation({ description: '인자로 받아 게시글을 수정합니다.', summary: '게시글 수정' })
+  @ApiOkResponse({ type: Board, description: '게시글 수정 성공' })
+  @ApiNotFoundResponse({ type: BoardError404, description: '해당 게시글이 존재하지 않을 때' })
+  @ApiForbiddenResponse({ type: BoardError403, description: '본인이 작성한 게시글이 아닐 때' })
+  @ApiUnauthorizedResponse({ type: AuthError401, description: '로그인한 사용자가 아닐 때' })
+  update(@Body() { updateBoardInput }: { updateBoardInput: UpdateBoardInput }): Promise<Board> {
+    return this.boardsService.update({ updateBoardInput });
   }
 
   /**
@@ -74,6 +86,7 @@ export class BoardsController {
    * @returns boolean
    */
   @Delete('board/:id')
+  // @UseGuards(JwtAccessGuard)
   @ApiOperation({ description: '게시글 id를 인자로 받아 게시글을 삭제합니다.', summary: '게시글 삭제' })
   @ApiOkResponse({ description: 'true' })
   @ApiNotFoundResponse({ type: BoardError404, description: '해당 게시글이 존재하지 않을 때' })

@@ -1,5 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Board } from 'src/apis/boards/entities/board.entity';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -31,4 +40,7 @@ export class User {
   @ApiProperty({ example: '2022-10-11T18:47:32.165Z' })
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => Board, (board) => board.user)
+  board: Board;
 }

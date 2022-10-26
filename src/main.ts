@@ -1,3 +1,4 @@
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
@@ -6,7 +7,15 @@ import { HttpExceptionFilter } from './common/filter/httpExceptionFilter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalFilters(new HttpExceptionFilter());
-
+  new ValidationPipe({
+    transform: true,
+    enableDebugMessages: true,
+    exceptionFactory(errors) {
+      console.log('나와라요', errors);
+      const message = Object.values(errors[0].constraints);
+      throw new BadRequestException(message[0]);
+    },
+  });
   const config = new DocumentBuilder()
     .setTitle('letsFootball')
     .setDescription('Rest API를 사용한 프로젝트 입니다.')
