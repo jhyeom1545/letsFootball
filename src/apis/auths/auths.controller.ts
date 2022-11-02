@@ -9,7 +9,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { AuthsService } from './auths.service';
+import { AuthService } from './auths.service';
 import { LoginInput } from './dto/login.Input.dto';
 import { JwtRefreshGuard } from 'src/common/auth/guard/jwtRefresh.guard';
 import { CurrentUser, ICurrentUser } from 'src/common/currentUser';
@@ -18,9 +18,9 @@ import { Error403, Error500, UserError404 } from 'src/common/type/error.type';
 
 @ApiTags('Auth')
 @Controller()
-export class AuthsController {
+export class AuthController {
   constructor(
-    private readonly authsService: AuthsService, //
+    private readonly authService: AuthService, //
   ) {}
 
   @Post('login')
@@ -33,7 +33,7 @@ export class AuthsController {
     @Body() loginInput: LoginInput,
     @Res({ passthrough: true }) res: Response, //
   ) {
-    return this.authsService.login({ loginInput, res });
+    return this.authService.login({ loginInput, res });
   }
 
   @Post('restoreAccessToken')
@@ -47,6 +47,6 @@ export class AuthsController {
   restoreAccessToken(
     @CurrentUser() currentUser: ICurrentUser, //
   ): Promise<string> {
-    return this.authsService.getAccessToken({ currentUser });
+    return this.authService.getAccessToken({ currentUser });
   }
 }

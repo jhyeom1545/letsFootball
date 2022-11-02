@@ -7,10 +7,10 @@ import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(
     @InjectRepository(User)
-    private readonly usersRepository: Repository<User>,
+    private readonly userRepository: Repository<User>,
   ) {}
   async create({ createUserInput }: { createUserInput: CreateUserInput }): Promise<User> {
     const { email, name, password } = createUserInput;
@@ -20,12 +20,12 @@ export class UsersService {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // email 존재하는지 확인하기
-    const isValidEmail = await this.usersRepository.findOne({
+    const isValidEmail = await this.userRepository.findOne({
       where: { email: email },
     });
     if (isValidEmail) throw new ConflictException('이미 존재하는 email 입니다.');
 
-    const result = await this.usersRepository.save({
+    const result = await this.userRepository.save({
       email,
       name,
       password: hashedPassword,
@@ -36,7 +36,7 @@ export class UsersService {
   }
 
   async findOne({ email }: { email: string }): Promise<User> {
-    const result = await this.usersRepository.findOne({
+    const result = await this.userRepository.findOne({
       where: { email },
     });
     // 이메일 존재하는지 확인
@@ -48,7 +48,7 @@ export class UsersService {
     const user = await this.findOne({ email });
     // 변경할 비밀번호 암호화 하기
     const hashedPassword = await bcrypt.hash(updateUserInput.password, 10);
-    const result = await this.usersRepository.save({
+    const result = await this.userRepository.save({
       ...user,
       ...updateUserInput,
       password: hashedPassword,
@@ -60,7 +60,7 @@ export class UsersService {
 
   async remove({ email }: { email: string }): Promise<boolean> {
     const user = await this.findOne({ email });
-    const result = await this.usersRepository.softDelete({ email: user.email });
+    const result = await this.userRepository.softDelete({ email: user.email });
     return result.affected ? true : false;
   }
 }

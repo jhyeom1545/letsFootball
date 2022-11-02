@@ -1,11 +1,10 @@
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { CreateUserInput } from '../dto/createUser.Input';
 import { UpdateUserInput } from '../dto/updateUser.Input';
 import { User } from '../entities/user.entity';
-import { UsersService } from '../users.service';
+import { UserService } from '../user.service';
 
 // Utility Type을 활용해서 타입 정해주기
 // Record를 통해 모든 타입 mocking, partial을 통해 부분적으로 사용 가능
@@ -20,9 +19,9 @@ const mockRepository = () => ({
   softDelete: jest.fn(),
 });
 
-describe('UsersService', () => {
-  let usersService: UsersService;
-  let usersRepository: MockRepository<User>;
+describe('UserService', () => {
+  let userService: UserService;
+  let userRepository: MockRepository<User>;
   let user: User;
   let updateUserInput: UpdateUserInput;
   let updateUser: User;
@@ -32,16 +31,16 @@ describe('UsersService', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
-        UsersService,
+        UserService,
         {
-          provide: getRepositoryToken(User),
+          provide: 'UserRepository',
           useFactory: mockRepository,
         },
       ],
     }).compile();
 
-    usersService = module.get<UsersService>(UsersService);
-    usersRepository = module.get('UserRepository') as MockRepository<User>;
+    userService = module.get<UserService>(UserService);
+    userRepository = module.get('UserRepository') as MockRepository<User>;
 
     createUserInput = {
       email: 'jhyeom1545@gmail.com',
@@ -82,22 +81,22 @@ describe('UsersService', () => {
   });
 
   it('유저 서비스 toBeDefined 테스트', () => {
-    expect(usersService).toBeDefined();
+    expect(userService).toBeDefined();
   });
 
   describe('유저 조회', () => {
     it('toBeDefined 테스트', () => {
-      expect(usersService.findOne).toBeDefined();
+      expect(userService.findOne).toBeDefined();
     });
     it('유효한 email일 경우 user를 반환합니다.', async () => {
-      jest.spyOn(usersRepository, 'findOne').mockResolvedValue(user);
-      const result = await usersService.findOne({ email: user.email });
+      jest.spyOn(userRepository, 'findOne').mockResolvedValue(user);
+      const result = await userService.findOne({ email: user.email });
       expect(result).toEqual(user);
     });
     it('유효하지 않은 email일 경우 404 Error를 반환합니다.', async () => {
       await expect(async () => {
-        jest.spyOn(usersRepository, 'findOne').mockResolvedValue(undefined);
-        const result = await usersService.findOne({ email: user.email });
+        jest.spyOn(userRepository, 'findOne').mockResolvedValue(undefined);
+        const result = await userService.findOne({ email: user.email });
         console.log(result);
       }).rejects.toThrowError();
     });
@@ -105,46 +104,46 @@ describe('UsersService', () => {
 
   describe('유저 업데이트', () => {
     it('toBeDefined 테스트', () => {
-      expect(usersService.update).toBeDefined();
+      expect(userService.update).toBeDefined();
     });
     it('유효한 email일 경우 변경된 User를 반환합니다.', async () => {
-      jest.spyOn(usersRepository, 'findOne').mockResolvedValue(user);
-      jest.spyOn(usersRepository, 'save').mockResolvedValue(updateUser);
-      const result = await usersService.update({ email: user.email, updateUserInput });
+      jest.spyOn(userRepository, 'findOne').mockResolvedValue(user);
+      jest.spyOn(userRepository, 'save').mockResolvedValue(updateUser);
+      const result = await userService.update({ email: user.email, updateUserInput });
       expect(result).toEqual(updateUser);
     });
     it('유효하지 않은 email일 경우 404 Error를 반환합니다.', async () => {
       await expect(async () => {
-        await usersService.update({ email: 'notValid@naver.com', updateUserInput });
+        await userService.update({ email: 'notValid@naver.com', updateUserInput });
       }).rejects.toThrowError(new NotFoundException('존재하지 않는 이메일입니다.'));
     });
   });
 
   describe('유저 삭제', () => {
     it('유효한 email로 삭제되면 true를 반환합니다', async () => {
-      jest.spyOn(usersRepository, 'findOne').mockResolvedValue(user);
-      jest.spyOn(usersRepository, 'softDelete').mockReturnValue(updateResult);
-      const result = await usersService.remove({ email: user.email });
+      jest.spyOn(userRepository, 'findOne').mockResolvedValue(user);
+      jest.spyOn(userRepository, 'softDelete').mockReturnValue(updateResult);
+      const result = await userService.remove({ email: user.email });
       expect(result).toEqual(true);
     });
     it('유효하지 않은 email일 경우 에러를 반환합니다.', async () => {
       await expect(async () => {
-        await usersService.remove({ email: user.email });
+        await userService.remove({ email: user.email });
       }).rejects.toThrowError(new NotFoundException('존재하지 않는 이메일입니다.'));
     });
   });
 
   describe('유저 회원가입', () => {
     it('유효한 email일 경우 User를 반환합니다', async () => {
-      jest.spyOn(usersRepository, 'findOne').mockResolvedValue(null);
-      jest.spyOn(usersRepository, 'save').mockResolvedValue(user);
-      const result = await usersService.create({ createUserInput });
+      jest.spyOn(userRepository, 'findOne').mockResolvedValue(null);
+      jest.spyOn(userRepository, 'save').mockResolvedValue(user);
+      const result = await userService.create({ createUserInput });
       expect(result).toEqual(user);
     });
     it('유효하지 않은 email일 경우 에러를 반환합니다.', async () => {
       await expect(async () => {
-        jest.spyOn(usersRepository, 'findOne').mockResolvedValue(new ConflictException('이미 존재하는 email 입니다.'));
-        await usersService.create({ createUserInput });
+        jest.spyOn(userRepository, 'findOne').mockResolvedValue(new ConflictException('이미 존재하는 email 입니다.'));
+        await userService.create({ createUserInput });
       }).rejects.toThrowError(new ConflictException('이미 존재하는 email 입니다.'));
     });
   });

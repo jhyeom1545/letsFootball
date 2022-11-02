@@ -1,24 +1,24 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UsersService } from '../users/users.service';
+import { UserService } from '../users/users.service';
 import { CreateBoardInput } from './dto/createBoard.input';
 import { DeleteBoardInput } from './dto/deleteBoard.input';
 import { UpdateBoardInput } from './dto/updateBoard.input';
 import { Board } from './entities/board.entity';
 
 @Injectable()
-export class BoardsService {
+export class BoardService {
   constructor(
     @InjectRepository(Board)
     private readonly boardsRepository: Repository<Board>,
 
-    private readonly usersService: UsersService,
+    private readonly userService: UserService,
   ) {}
 
   async create({ createBoardInput }: { createBoardInput: CreateBoardInput }): Promise<Board> {
     const { email } = createBoardInput;
-    const userEmail = await this.usersService.findOne({ email });
+    const userEmail = await this.userService.findOne({ email });
 
     const result = await this.boardsRepository.save({
       user: userEmail,
@@ -47,7 +47,7 @@ export class BoardsService {
   async update({ updateBoardInput }: { updateBoardInput: UpdateBoardInput }): Promise<Board> {
     const { email, id } = updateBoardInput;
     // 입력받은 유저가 유효한지 조회합니다.
-    const user = await this.usersService.findOne({ email });
+    const user = await this.userService.findOne({ email });
 
     // 입력받은 게시글이 유효한지 조회합니다.
     const board = await this.findOneById({ id });
@@ -64,7 +64,7 @@ export class BoardsService {
   async remove({ deleteBoardInput }: { deleteBoardInput: DeleteBoardInput }): Promise<boolean> {
     const { email, id } = deleteBoardInput;
     // 입력받은 유저가 유효한지 조회합니다.
-    const user = await this.usersService.findOne({ email });
+    const user = await this.userService.findOne({ email });
 
     // 입력받은 게시글이 유효한지 조회합니다.
     const board = await this.findOneById({ id });

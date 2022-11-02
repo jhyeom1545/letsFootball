@@ -40,7 +40,4 @@ export class User {
   @ApiProperty({ example: '2022-10-11T18:47:32.165Z' })
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @OneToMany(() => Board, (board) => board.user)
-  board: Board;
 }

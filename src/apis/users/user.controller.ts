@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, ValidationPipe } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UserService } from './users.service';
 import { CreateUserInput } from './dto/createUser.Input';
 import { UpdateUserInput } from './dto/updateUser.Input';
 import {
@@ -20,8 +20,8 @@ import { AuthError401, UserError404, UserError409 } from 'src/common/type/error.
 
 @ApiTags('User')
 @Controller({ path: 'api/', version: 'v1' })
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
   /**
    * @summery 유저 생성 API
@@ -37,7 +37,7 @@ export class UsersController {
   @ApiOkResponse({ type: User, description: '회원가입 성공' })
   @ApiConflictResponse({ type: UserError409, description: '이미 가입된 회원일 때' })
   create(@Body(ValidationPipe) createUserInput: CreateUserInput): Promise<User> {
-    return this.usersService.create({ createUserInput });
+    return this.userService.create({ createUserInput });
   }
 
   /**
@@ -50,7 +50,7 @@ export class UsersController {
   @ApiOkResponse({ type: User, description: '유저 조회에 성공' })
   @ApiNotFoundResponse({ type: UserError404, description: '조회하는 이메일이 없을 때' })
   async findOne(@Query('email') email: string): Promise<User> {
-    const result = await this.usersService.findOne({ email });
+    const result = await this.userService.findOne({ email });
     return result;
   }
 
@@ -68,7 +68,7 @@ export class UsersController {
   @ApiUnauthorizedResponse({ type: AuthError401, description: '로그인 상태가 아닐 때' })
   @ApiNotFoundResponse({ type: UserError404, description: '해당 이메일이 없을 때' })
   update(@Param('email') email: string, @Body() updateUserInput: UpdateUserInput): Promise<User> {
-    return this.usersService.update({ email, updateUserInput });
+    return this.userService.update({ email, updateUserInput });
   }
 
   /**
@@ -87,6 +87,6 @@ export class UsersController {
   @ApiOkResponse({ type: removeUserResponse, description: '회원 탈퇴 완료' })
   @ApiNotFoundResponse({ type: User, description: '123' })
   remove(@Param('email') email: string): Promise<boolean> {
-    return this.usersService.remove({ email });
+    return this.userService.remove({ email });
   }
 }

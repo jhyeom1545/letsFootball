@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './apis/users/users.module';
-import { AuthsModule } from './apis/auths/auths.module';
+import { UserModule } from './apis/users/user.module';
+import { AuthModule } from './apis/auths/auths.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { BoardsModule } from './apis/boards/boards.module';
-import { LikesModule } from './likes/likes.module';
+import { BoardModule } from './apis/boards/board.module';
+import { LikeModule } from './apis/likes/like.module';
 
 @Module({
   imports: [
-    AuthsModule,
-    UsersModule,
-    BoardsModule,
+    AuthModule,
+    UserModule,
+    BoardModule,
+    LikeModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -26,8 +27,6 @@ import { LikesModule } from './likes/likes.module';
       logging: true,
       retryAttempts: 20,
     }),
-    BoardsModule,
-    LikesModule,
   ],
 })
 export class AppModule {}

@@ -4,20 +4,20 @@ import * as bcrypt from 'bcrypt';
 import { Response } from 'express';
 import { ICurrentUser } from 'src/common/currentUser';
 import { User } from '../users/entities/user.entity';
-import { UsersService } from '../users/users.service';
+import { UserService } from '../users/user.service';
 import { LoginInput } from './dto/login.Input.dto';
 
 @Injectable()
-export class AuthsService {
+export class AuthService {
   constructor(
-    private readonly usersService: UsersService, //
+    private readonly userService: UserService, //
     private readonly jwtService: JwtService,
   ) {}
 
   async login({ loginInput, res }: { loginInput: LoginInput; res: Response }): Promise<string> {
     const { email, password } = loginInput;
     // Id 확인
-    const user = await this.usersService.findOne({ email });
+    const user = await this.userService.findOne({ email });
 
     // 비밀번호 확인
     const isValidPassword = await bcrypt.compare(password, user.password);
