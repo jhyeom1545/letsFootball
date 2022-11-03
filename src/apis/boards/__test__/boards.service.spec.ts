@@ -40,15 +40,15 @@ describe('BoardService', () => {
     boardService = module.get<BoardService>(BoardService);
     // userRepository = module.get('UserRepository') as MockRepository<User>;
 
-    // user = {
-    //   email: 'jhyeom1545@gmail.com',
-    //   name: '홍길동',
-    //   points: 500,
-    //   password: '12345',
-    //   createdAt: new Date('2022-10-11T18:47:32.165Z'),
-    //   updatedAt: new Date('2022-10-11T18:47:32.165Z'),
-    //   deletedAt: null,
-    // };
+    user = {
+      email: 'jhyeom1545@gmail.com',
+      name: '홍길동',
+      points: 500,
+      password: '12345',
+      createdAt: new Date('2022-10-11T18:47:32.165Z'),
+      updatedAt: new Date('2022-10-11T18:47:32.165Z'),
+      deletedAt: null,
+    };
     // jest.spyOn(userService, 'findOne').mockResolvedValue(user);
   });
 
