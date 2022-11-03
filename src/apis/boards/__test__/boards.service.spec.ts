@@ -38,7 +38,7 @@ describe('BoardService', () => {
     // userService = module.get<UserService>(UserService);
     boardRepository = module.get('BoardRepository') as MockRepository<Board>;
     boardService = module.get<BoardService>(BoardService);
-    // userRepository = module.get('UserRepository') as MockRepository<User>;
+    userRepository = module.get('UserRepository') as MockRepository<User>;
 
     user = {
       email: 'jhyeom1545@gmail.com',
