@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserService } from '../users/users.service';
+import { UserService } from '../users/user.service';
 import { CreateBoardInput } from './dto/createBoard.input';
 import { DeleteBoardInput } from './dto/deleteBoard.input';
 import { UpdateBoardInput } from './dto/updateBoard.input';

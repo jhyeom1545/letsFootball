@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { User } from 'src/apis/users/entities/user.entity';
 import {
   Column,
@@ -40,6 +40,11 @@ export class Board {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @ApiPropertyOptional({
+    type: Object,
+    example: { email: 'jhyeom1545@gmail.com' },
+    description: '게시글을 작성한 유저 이메일',
+  })
   @ManyToOne(() => User)
   user: User;
 }
