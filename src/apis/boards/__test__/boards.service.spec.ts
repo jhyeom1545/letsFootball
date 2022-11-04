@@ -49,7 +49,6 @@ describe('BoardService', () => {
       updatedAt: new Date('2022-10-11T18:47:32.165Z'),
       deletedAt: null,
     };
-    // jest.spyOn(userService, 'findOne').mockResolvedValue(user);
   });
 
   it('should be defined', () => {
