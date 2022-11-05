@@ -7,11 +7,14 @@ import { HttpExceptionFilter } from './common/filter/httpExceptionFilter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.enableCors({
+    credentials: true,
+    origin: [`'${process.env.ALLOW_ORIGIN_URL}'`],
+  });
   new ValidationPipe({
     transform: true,
     enableDebugMessages: true,
     exceptionFactory(errors) {
-      console.log('나와라요', errors);
       const message = Object.values(errors[0].constraints);
       throw new BadRequestException(message[0]);
     },
@@ -32,7 +35,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
   await app.listen(3000);
 }
 bootstrap();
