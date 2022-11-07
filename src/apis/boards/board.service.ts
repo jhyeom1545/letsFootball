@@ -12,7 +12,6 @@ export class BoardService {
   constructor(
     @InjectRepository(Board)
     private readonly boardsRepository: Repository<Board>,
-
     private readonly userService: UserService,
   ) {}
 
