@@ -5,6 +5,7 @@ import { CreateUserInput } from './dto/createUser.Input';
 import { UpdateUserInput } from './dto/updateUser.Input';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { ErrorType } from 'src/common/type/message.type';
 
 @Injectable()
 export class UserService {
@@ -23,7 +24,7 @@ export class UserService {
     const isValidEmail = await this.userRepository.findOne({
       where: { email: email },
     });
-    if (isValidEmail) throw new ConflictException('이미 존재하는 email 입니다.');
+    if (isValidEmail) throw new ConflictException('이미 존재하는 이메일 입니다.');
 
     const result = await this.userRepository.save({
       email,
@@ -40,7 +41,7 @@ export class UserService {
       where: { email },
     });
     // 이메일 존재하는지 확인
-    if (!result) throw new NotFoundException('존재하지 않는 이메일입니다.');
+    if (!result) throw new NotFoundException(ErrorType.user.notFound.msg);
     return result;
   }
 
@@ -61,6 +62,7 @@ export class UserService {
   async remove({ email }: { email: string }): Promise<boolean> {
     const user = await this.findOne({ email });
     const result = await this.userRepository.softDelete({ email: user.email });
+    console.log(result);
     return result.affected ? true : false;
   }
 }

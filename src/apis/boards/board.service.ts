@@ -1,5 +1,6 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ErrorType } from 'src/common/type/message.type';
 import { Repository } from 'typeorm';
 import { UserService } from '../users/user.service';
 import { CreateBoardInput } from './dto/createBoard.input';
@@ -12,7 +13,6 @@ export class BoardService {
   constructor(
     @InjectRepository(Board)
     private readonly boardsRepository: Repository<Board>,
-
     private readonly userService: UserService,
   ) {}
 
@@ -27,7 +27,7 @@ export class BoardService {
     return result;
   }
 
-  async findAll({ page }): Promise<Board[]> {
+  async findAll({ page }: { page: number }): Promise<Board[]> {
     return await this.boardsRepository.find({
       relations: ['user'],
       take: 10,
@@ -40,7 +40,7 @@ export class BoardService {
       where: { id: id },
       relations: ['user'],
     });
-    if (!result) throw new NotFoundException('해당 게시글이 존재하지 않습니다.');
+    if (!result) throw new NotFoundException(ErrorType.board.notFound.msg);
     return result;
   }
 
@@ -48,12 +48,14 @@ export class BoardService {
     const { email, id } = updateBoardInput;
     // 입력받은 유저가 유효한지 조회합니다.
     const user = await this.userService.findOne({ email });
+    if (!user) throw new NotFoundException(ErrorType.user.notFound.msg);
 
     // 입력받은 게시글이 유효한지 조회합니다.
     const board = await this.findOneById({ id });
+    if (!board) throw new NotFoundException(ErrorType.board.notFound.msg);
 
     // 조회한 유저가 게시글 작성자와 동일한지 확인합니다.
-    if (user.email !== board.email) throw new ForbiddenException('본인의 게시글만 접근이 가능합니다.');
+    if (user.email !== board.email) throw new ForbiddenException(ErrorType.board.forbidden.msg);
 
     const result = this.boardsRepository.save({
       ...updateBoardInput,
@@ -65,12 +67,14 @@ export class BoardService {
     const { email, id } = deleteBoardInput;
     // 입력받은 유저가 유효한지 조회합니다.
     const user = await this.userService.findOne({ email });
+    if (!user) throw new NotFoundException(ErrorType.user.notFound.msg);
 
     // 입력받은 게시글이 유효한지 조회합니다.
     const board = await this.findOneById({ id });
+    if (!board) throw new NotFoundException(ErrorType.board.notFound.msg);
 
     // 조회한 유저가 게시글 작성자와 동일한지 확인합니다.
-    if (user.email !== board.email) throw new ForbiddenException('본인의 게시글만 접근이 가능합니다.');
+    if (user.email !== board.email) throw new ForbiddenException(ErrorType.board.forbidden.msg);
 
     const result = await this.boardsRepository.softDelete({ id: board.id });
     return result.affected ? true : false;
