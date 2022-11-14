@@ -38,7 +38,7 @@ export class BoardService {
   async findOneById({ id }: { id: string }): Promise<Board> {
     const result = await this.boardsRepository.findOne({
       where: { id: id },
-      relations: ['user'],
+      relations: ['user', 'comment'],
     });
     if (!result) throw new NotFoundException(ErrorType.board.notFound.msg);
     return result;
@@ -55,7 +55,7 @@ export class BoardService {
     if (!board) throw new NotFoundException(ErrorType.board.notFound.msg);
 
     // 조회한 유저가 게시글 작성자와 동일한지 확인합니다.
-    if (user.email !== board.email) throw new ForbiddenException(ErrorType.board.forbidden.msg);
+    if (user.email !== board.user.email) throw new ForbiddenException(ErrorType.board.forbidden.msg);
 
     const result = this.boardsRepository.save({
       ...updateBoardInput,
@@ -74,7 +74,7 @@ export class BoardService {
     if (!board) throw new NotFoundException(ErrorType.board.notFound.msg);
 
     // 조회한 유저가 게시글 작성자와 동일한지 확인합니다.
-    if (user.email !== board.email) throw new ForbiddenException(ErrorType.board.forbidden.msg);
+    if (user.email !== board.user.email) throw new ForbiddenException(ErrorType.board.forbidden.msg);
 
     const result = await this.boardsRepository.softDelete({ id: board.id });
     return result.affected ? true : false;
