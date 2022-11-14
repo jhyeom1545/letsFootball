@@ -1,31 +1,25 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiOperation, ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Board } from 'src/apis/boards/entities/board.entity';
 import { User } from 'src/apis/users/entities/user.entity';
-import { Comment } from 'src/comment/entities/comment.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinTable,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
-export class Board {
-  @ApiProperty({ example: '6020c315-c982-496e-bb50-f7340c485f1f' })
+export class Comment {
+  @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  @ApiProperty({ example: '게시글 제목' })
-  title: string;
-
-  @Column()
-  @ApiProperty({ example: '게시글 내용' })
-  content: string;
+  @ApiProperty()
+  comment: string;
 
   @ApiProperty({ example: null })
   @DeleteDateColumn()
@@ -39,11 +33,11 @@ export class Board {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ApiPropertyOptional({
-    type: Object,
-    example: { email: 'jhyeom1545@gmail.com' },
-    description: '게시글을 작성한 유저 이메일',
-  })
+  @ApiPropertyOptional({ type: Object })
   @ManyToOne(() => User)
   user: User;
+
+  @ApiPropertyOptional({ type: Object })
+  @ManyToOne(() => Board, { eager: true })
+  board: Board;
 }

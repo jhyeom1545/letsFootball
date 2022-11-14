@@ -5,12 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { BoardModule } from './apis/boards/board.module';
 import { LikeModule } from './apis/likes/like.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
     AuthModule,
-    UserModule,
     BoardModule,
+    CommentModule,
+    UserModule,
     LikeModule,
     ConfigModule.forRoot({
       isGlobal: true,
@@ -26,7 +28,9 @@ import { LikeModule } from './apis/likes/like.module';
       synchronize: true,
       logging: true,
       retryAttempts: 20,
+      timezone: 'Z',
     }),
+    CommentModule,
   ],
 })
 export class AppModule {}
