@@ -3,7 +3,7 @@ import { UserModule } from './apis/user/user.module';
 import { AuthModule } from './apis/auth/auths.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { BoardModule } from './apis/boards/board.module';
+import { BoardModule } from './apis/board/board.module';
 import { CommentModule } from './apis/comment/comment.module';
 
 @Module({

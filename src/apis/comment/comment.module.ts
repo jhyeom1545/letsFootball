@@ -4,9 +4,9 @@ import { CommentController } from './comment.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Comment } from './entities/comment.entity';
 import { UserService } from 'src/apis/user/user.service';
-import { BoardService } from 'src/apis/boards/board.service';
+import { BoardService } from 'src/apis/board/board.service';
 import { User } from 'src/apis/user/entities/user.entity';
-import { Board } from 'src/apis/boards/entities/board.entity';
+import { Board } from 'src/apis/board/entities/board.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Comment, User, Board])],

@@ -104,20 +104,20 @@ PascalCase 사용
 
 |  METHOD  |                     URL                      |                    PARAMETER                     |       RETURN        |    DESCRIPTION     |
 | :------: | :------------------------------------------: | :----------------------------------------------: | :-----------------: | :----------------: |
-| **POST** |       http://localhost:3000/api/login        | [loginInput](./src/apis/auth/dto/login.input.ts) | String(액세스 토큰) |       로그인       |
+| **POST** |       http://localhost:3000/api/login        | [LoginInput](./src/apis/auth/dto/login.input.ts) | String(액세스 토큰) |       로그인       |
 | **POST** | http://localhost:3000/api/restoreAccessToken |                        -                         | String(액세스 토큰) | 액세스 토큰 재발급 |
 
 <br>
 
 ### **Board**
 
-|   METHOD   |                  URL                   |                               PARAMETER                               |                         RETURN                         |   DESCRIPTION    |
-| :--------: | :------------------------------------: | :-------------------------------------------------------------------: | :----------------------------------------------------: | :--------------: |
-|  **POST**  |    http://localhost:3000/api/board     |    [CreateBoardInput](./src/apis/comment/dto/createBoard.input.ts)    |  [Board](./src/apis/comment/entities/board.entity.ts)  |  게시글을 생성   |
-|  **GET**   | http://localhost:3000/api/board/{page} |                                 page                                  | [Board[]](./src/apis/comment/entities/board.entity.ts) | 게시글 전체 조회 |
-|  **GET**   |  http://localhost:3000/api/board/{id}  |                                  id                                   |  [Board](./src/apis/comment/entities/board.entity.ts)  |   게시글 조회    |
-| **PATCH**  |  http://localhost:3000/api/board/{id}  |    [UpdateBoardInput](./src/apis/comment/dto/updateBoard.input.ts)    |  [Board](./src/apis/comment/entities/board.entity.ts)  |   게시글 수정    |
-| **DELETE** |  http://localhost:3000/api/board/{id}  | [DeleteBoardInput](./src/apis/comment/dto/deleteBoard.input.input.ts) |                        boolean                         |  게시글을 삭제   |
+|   METHOD   |                  URL                   |                           PARAMETER                           |                        RETURN                        |   DESCRIPTION    |
+| :--------: | :------------------------------------: | :-----------------------------------------------------------: | :--------------------------------------------------: | :--------------: |
+|  **POST**  |    http://localhost:3000/api/board     | [CreateBoardInput](./src/apis/board/dto/createBoard.input.ts) |  [Board](./src/apis/board/entities/board.entity.ts)  |  게시글을 생성   |
+|  **GET**   | http://localhost:3000/api/board/{page} |                             page                              | [Board[]](./src/apis/board/entities/board.entity.ts) | 게시글 전체 조회 |
+|  **GET**   |  http://localhost:3000/api/board/{id}  |                              id                               |  [Board](./src/apis/board/entities/board.entity.ts)  |   게시글 조회    |
+| **PATCH**  |  http://localhost:3000/api/board/{id}  | [UpdateBoardInput](./src/apis/board/dto/updateBoard.input.ts) |  [Board](./src/apis/board/entities/board.entity.ts)  |   게시글 수정    |
+| **DELETE** |  http://localhost:3000/api/board/{id}  | [DeleteBoardInput](./src/apis/board/dto/deleteBoard.input.ts) |                       boolean                        |  게시글을 삭제   |
 
 <br>
 
@@ -128,19 +128,19 @@ PascalCase 사용
 |  **POST**  |       http://localhost:3000/api/comment       |  [CreateFeedInput](./src/apis/comment/dto/createComment.input.ts)   |  [Comment](./src/apis/comment/entities/comment.entity.ts)  |        댓글 생성        |
 |  **GET**   |  http://localhost:3000/api/comment/{boardId}  |                               boardId                               | [Comment[]](./src/apis/comment/entities/comment.entity.ts) | 게시글의 전체 댓글 조회 |
 |  **GET**   | http://localhost:3000/api/comment/{commentId} |                              commentId                              |  [Comment](./src/apis/comment/entities/comment.entity.ts)  |        댓글 조회        |
-| **PATCH**  | http://localhost:3000/api/comment/{commentId} |  [UpdateCommentInput](./src/apis/comment/dto/updateFeed.input.ts)   |  [Comment](./src/apis/comment/entities/comment.entity.ts)  |        댓글 수정        |
+| **PATCH**  | http://localhost:3000/api/comment/{commentId} | [UpdateCommentInput](./src/apis/comment/dto/updateComment.input.ts) |  [Comment](./src/apis/comment/entities/comment.entity.ts)  |        댓글 수정        |
 | **DELETE** | http://localhost:3000/api/comment/{commentId} | [DeleteCommentInput](./src/apis/comment/dto/deleteComment.input.ts) |                          boolean                           |        댓글 삭제        |
 
 <br>
 
 ### **User**
 
-|   METHOD   |              URL               |                         PARAMETER                          |                    RETURN                     |  DESCRIPTION   |
-| :--------: | :----------------------------: | :--------------------------------------------------------: | :-------------------------------------------: | :------------: |
-|  **POST**  | http://localhost:3000/api/user | [CreateUserInput](./src/apis/auth/dto/createUser.input.ts) | [User]/src/apis/user/entities/user.entity.ts) | 유저 회원 가입 |
-|  **GET**   | http://localhost:3000/api/user |                           email                            | [User]/src/apis/user/entities/user.entity.ts) |   유저 조회    |
-| **PATCH**  | http://localhost:3000/api/user | [UpdateUserInput](./src/apis/user/dto/updateUser.input.ts) | [User]/src/apis/user/entities/user.entity.ts) | 유저 정보 수정 |
-| **DELETE** | http://localhost:3000/api/user |                           email                            |                    boolean                    | 유저 회원 탈퇴 |
+|   METHOD   |              URL               |                         PARAMETER                          |                     RETURN                      |  DESCRIPTION   |
+| :--------: | :----------------------------: | :--------------------------------------------------------: | :---------------------------------------------: | :------------: |
+|  **POST**  | http://localhost:3000/api/user | [CreateUserInput](./src/apis/user/dto/createUser.input.ts) | [User](./src/apis/user/entities/user.entity.ts) | 유저 회원 가입 |
+|  **GET**   | http://localhost:3000/api/user |                           email                            | [User](./src/apis/user/entities/user.entity.ts) |   유저 조회    |
+| **PATCH**  | http://localhost:3000/api/user | [UpdateUserInput](./src/apis/user/dto/updateUser.input.ts) | [User](./src/apis/user/entities/user.entity.ts) | 유저 정보 수정 |
+| **DELETE** | http://localhost:3000/api/user |                           email                            |                     boolean                     | 유저 회원 탈퇴 |
 
 <br>
 

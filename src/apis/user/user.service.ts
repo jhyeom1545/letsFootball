@@ -2,7 +2,7 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserInput } from './dto/createUser.Input';
-import { UpdateUserInput } from './dto/updateUser.Input';
+import { UpdateUserInput } from './dto/updateUser.input';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { ErrorType } from 'src/common/type/message.type';

@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ApiBody, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CommentService } from './comment.service';
-import { CreateCommentInput } from './dto/createComment.Input';
+import { CreateCommentInput } from './dto/createComment.input';
 import { DeleteCommentInput } from './dto/deleteComment.input';
-import { UpdateCommentInput } from './dto/updateComment.Input';
+import { UpdateCommentInput } from './dto/updateComment.input';
 import { Comment } from './entities/comment.entity';
 
 @ApiTags('Comment')
