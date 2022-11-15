@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, ValidationPipe } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserInput } from './dto/createUser.Input';
+import { CreateUserInput } from './dto/createUser.input';
 import { UpdateUserInput } from './dto/updateUser.input';
 import {
   ApiBearerAuth,
@@ -67,7 +67,7 @@ export class UserController {
   @ApiOkResponse({ type: UpdateUserResponse, description: '유저 정보 수정' })
   @ApiUnauthorizedResponse({ type: AuthError401, description: '로그인 상태가 아닐 때' })
   @ApiNotFoundResponse({ type: UserError404, description: '해당 이메일이 없을 때' })
-  update(@Param('email') email: string, @Body() updateUserInput: UpdateUserInput): Promise<User> {
+  update(@Param('email') email: string, @Body(ValidationPipe) updateUserInput: UpdateUserInput): Promise<User> {
     return this.userService.update({ email, updateUserInput });
   }
 

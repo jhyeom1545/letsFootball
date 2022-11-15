@@ -116,7 +116,6 @@ describe('UserService', () => {
       jest.spyOn(userRepository, 'findOne').mockResolvedValue(user);
       jest.spyOn(userRepository, 'softDelete').mockResolvedValue({ affected: 1 });
       const result = await userService.remove({ email: userEmail });
-      console.log(result);
       expect(result).toBeTruthy();
     });
     it('유효하지 않은 email일 경우 예외를 발생시킵니다.', async () => {

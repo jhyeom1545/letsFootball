@@ -125,7 +125,7 @@ PascalCase 사용
 
 |   METHOD   |                      URL                      |                              PARAMETER                              |                           RETURN                           |       DESCRIPTION       |
 | :--------: | :-------------------------------------------: | :-----------------------------------------------------------------: | :--------------------------------------------------------: | :---------------------: |
-|  **POST**  |       http://localhost:3000/api/comment       |  [CreateFeedInput](./src/apis/comment/dto/createComment.input.ts)   |  [Comment](./src/apis/comment/entities/comment.entity.ts)  |        댓글 생성        |
+|  **POST**  |       http://localhost:3000/api/comment       | [CreateCommentInput](./src/apis/comment/dto/createComment.input.ts) |  [Comment](./src/apis/comment/entities/comment.entity.ts)  |        댓글 생성        |
 |  **GET**   |  http://localhost:3000/api/comment/{boardId}  |                               boardId                               | [Comment[]](./src/apis/comment/entities/comment.entity.ts) | 게시글의 전체 댓글 조회 |
 |  **GET**   | http://localhost:3000/api/comment/{commentId} |                              commentId                              |  [Comment](./src/apis/comment/entities/comment.entity.ts)  |        댓글 조회        |
 | **PATCH**  | http://localhost:3000/api/comment/{commentId} | [UpdateCommentInput](./src/apis/comment/dto/updateComment.input.ts) |  [Comment](./src/apis/comment/entities/comment.entity.ts)  |        댓글 수정        |

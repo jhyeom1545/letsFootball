@@ -12,7 +12,7 @@ export class CreateCommentInput {
 
   @IsString()
   @IsNotEmpty()
-  @ApiProperty({ example: '99e306da-789d-45f4-a228-f33cfab3e301' })
+  @ApiProperty({ description: '작성될 게시글', example: '99e306da-789d-45f4-a228-f33cfab3e301' })
   boardId: string;
 
   @IsString()

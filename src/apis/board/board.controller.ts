@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ValidationPipe } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
@@ -29,12 +30,13 @@ export class BoardController {
    */
   @Post('board')
   @UseGuards(JwtAccessGuard)
+  @ApiBody({ type: CreateBoardInput })
   @ApiOperation({ description: 'title, content, email을 인자로 받아 게시글을 생성합니다.', summary: '게시글 생성' })
   @ApiBearerAuth('access-token')
   @ApiCreatedResponse({ type: Board, description: '게시글 작성 성공' })
   @ApiNotFoundResponse({ type: UserError404, description: '조회하는 이메일이 없을 때' })
   @ApiUnauthorizedResponse({ type: AuthError401, description: '로그인 상태가 아닐 때' })
-  create(@Body() createBoardInput: CreateBoardInput): Promise<Board> {
+  create(@Body(ValidationPipe) createBoardInput: CreateBoardInput): Promise<Board> {
     return this.boardService.create({ createBoardInput });
   }
 
@@ -69,13 +71,13 @@ export class BoardController {
    * @returns Board
    */
   @Patch('board/:id')
-  // @UseGuards(JwtAccessGuard)
+  @UseGuards(JwtAccessGuard)
   @ApiOperation({ description: '인자로 받아 게시글을 수정합니다.', summary: '게시글 수정' })
   @ApiOkResponse({ type: Board, description: '게시글 수정 성공' })
   @ApiNotFoundResponse({ type: BoardError404, description: '해당 게시글이 존재하지 않을 때' })
   @ApiForbiddenResponse({ type: BoardError403, description: '본인이 작성한 게시글이 아닐 때' })
   @ApiUnauthorizedResponse({ type: AuthError401, description: '로그인한 사용자가 아닐 때' })
-  update(@Body() { updateBoardInput }: { updateBoardInput: UpdateBoardInput }): Promise<Board> {
+  update(@Body(ValidationPipe) { updateBoardInput }: { updateBoardInput: UpdateBoardInput }): Promise<Board> {
     return this.boardService.update({ updateBoardInput });
   }
 
@@ -85,13 +87,13 @@ export class BoardController {
    * @returns boolean
    */
   @Delete('board/:id')
-  // @UseGuards(JwtAccessGuard)
+  @UseGuards(JwtAccessGuard)
   @ApiOperation({ description: '게시글 id를 인자로 받아 게시글을 삭제합니다.', summary: '게시글 삭제' })
   @ApiOkResponse({ description: 'true' })
   @ApiNotFoundResponse({ type: BoardError404, description: '해당 게시글이 존재하지 않을 때' })
   @ApiForbiddenResponse({ type: BoardError403, description: '본인이 작성한 게시글이 아닐 때' })
   @ApiUnauthorizedResponse({ type: AuthError401, description: '로그인한 사용자가 아닐 때' })
-  remove(@Body() deleteBoardInput: DeleteBoardInput): Promise<boolean> {
+  remove(@Body(ValidationPipe) deleteBoardInput: DeleteBoardInput): Promise<boolean> {
     return this.boardService.remove({ deleteBoardInput });
   }
 }

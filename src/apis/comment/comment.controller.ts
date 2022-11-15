@@ -1,5 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ApiBody, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseGuards } from '@nestjs/common';
+import {
+  ApiBody,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { JwtAccessGuard } from 'src/common/auth/guard/jwtAccess.guard';
+import { BoardError403, Comment404 } from 'src/common/type/error.type';
 import { CommentService } from './comment.service';
 import { CreateCommentInput } from './dto/createComment.input';
 import { DeleteCommentInput } from './dto/deleteComment.input';
@@ -19,10 +29,12 @@ export class CommentController {
    * @returns Comment
    */
   @Post('comment')
+  @UseGuards(JwtAccessGuard)
   @ApiOperation({ description: 'comment를 인자로 받아 댓글을 작성합니다.', summary: '댓글 생성' })
   @ApiBody({ type: CreateCommentInput })
-  @ApiCreatedResponse({ type: Comment })
-  create(@Body() createCommentInput: CreateCommentInput): Promise<Comment> {
+  @ApiCreatedResponse({ type: Comment, description: '댓글 생성 성공' })
+  @ApiNotFoundResponse({ type: Comment404, description: '해당 댓글을 찾을 수 없을 때' })
+  create(@Body(ValidationPipe) createCommentInput: CreateCommentInput): Promise<Comment> {
     return this.commentService.create({ createCommentInput });
   }
 
@@ -36,6 +48,8 @@ export class CommentController {
     description: 'boardId를 인자로 받아 게시글의 댓글을 조회합니다.',
     summary: '게시글의 전체 댓글 조회',
   })
+  @ApiOkResponse({ type: Comment, description: '댓글을 조회하였습니다.' })
+  @ApiNotFoundResponse({ type: Comment404, description: '해당 댓글을 찾을 수 없을 때' })
   findAll(@Param('boardId') boardId: string): Promise<Comment[]> {
     return this.commentService.findAll({ boardId });
   }
@@ -47,6 +61,8 @@ export class CommentController {
    */
   @Get('comment/:commentId')
   @ApiOperation({ description: 'commentId를 인자로 받아 댓글을 조회합니다.', summary: '댓글 조회' })
+  @ApiOkResponse({ type: Comment, description: '댓글을 조회하였습니다.' })
+  @ApiNotFoundResponse({ type: Comment404, description: '해당 댓글을 찾을 수 없을 때' })
   findOne(@Param('commentId') commentId: string): Promise<Comment> {
     return this.commentService.findOneById({ commentId });
   }
@@ -57,8 +73,16 @@ export class CommentController {
    * @returns Comment
    */
   @Patch('comment/:commentId')
+  @UseGuards(JwtAccessGuard)
+  @ApiBody({ type: UpdateCommentInput })
   @ApiOperation({ description: 'commentId를 인자로 받아 댓글을 수정합니다.', summary: '댓글 수정' })
-  update(@Param('commentId') commentId: string, @Body() updateCommentInput: UpdateCommentInput): Promise<Comment> {
+  @ApiOkResponse({ type: Comment, description: '댓글이 수정되었습니다.' })
+  @ApiNotFoundResponse({ type: Comment404, description: '해당 댓글을 찾을 수 없을 때' })
+  @ApiForbiddenResponse({ type: BoardError403, description: '본인이 작성한 게시글이 아닐 때' })
+  update(
+    @Param('commentId') commentId: string,
+    @Body(ValidationPipe) updateCommentInput: UpdateCommentInput,
+  ): Promise<Comment> {
     return this.commentService.update({ commentId, updateCommentInput });
   }
 
@@ -68,8 +92,11 @@ export class CommentController {
    * @returns boolean
    */
   @Delete('comment/:commentId')
+  @UseGuards(JwtAccessGuard)
+  @ApiOkResponse({ type: Boolean, description: '댓글이 삭제 되었습니다.' })
+  @ApiNotFoundResponse({ type: Comment404, description: '해당 댓글을 찾을 수 없을 때' })
   @ApiOperation({ description: 'commentId를 인자로 받아 댓글을 삭제합니다.', summary: '댓글 삭제' })
-  remove(@Body() deleteCommentInput: DeleteCommentInput): Promise<boolean> {
+  remove(@Body(ValidationPipe) deleteCommentInput: DeleteCommentInput): Promise<boolean> {
     return this.commentService.remove({ deleteCommentInput });
   }
 }

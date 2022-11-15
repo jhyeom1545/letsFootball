@@ -28,4 +28,13 @@ export const ErrorType = {
       msg: '본인의 게시글만 접근이 가능합니다.',
     },
   },
+  comment: {
+    notFound: {
+      /**
+       * MESSAGE - 해당 댓글을 찾을 수 없습니다.
+       */
+      code: 404,
+      msg: '해당 댓글을 찾을 수 없습니다.',
+    },
+  },
 };
