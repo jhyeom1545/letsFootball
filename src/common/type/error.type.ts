@@ -61,3 +61,11 @@ export class Error403 {
   @ApiProperty({ example: '비밀번호가 틀립니다.' })
   message: string;
 }
+
+export class Comment404 {
+  @ApiProperty({ example: 404 })
+  statusCode: number;
+
+  @ApiProperty({ example: '해당 댓글을 찾을 수 없습니다.' })
+  message: string;
+}

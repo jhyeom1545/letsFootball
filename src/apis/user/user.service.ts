@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserInput } from './dto/createUser.Input';
+import { CreateUserInput } from './dto/createUser.input';
 import { UpdateUserInput } from './dto/updateUser.input';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
@@ -62,7 +62,6 @@ export class UserService {
   async remove({ email }: { email: string }): Promise<boolean> {
     const user = await this.findOne({ email });
     const result = await this.userRepository.softDelete({ email: user.email });
-    console.log(result);
     return result.affected ? true : false;
   }
 }

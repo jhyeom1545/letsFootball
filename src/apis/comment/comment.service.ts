@@ -1,7 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BoardService } from 'src/apis/board/board.service';
 import { UserService } from 'src/apis/user/user.service';
+import { ErrorType } from 'src/common/type/message.type';
 import { Repository } from 'typeorm';
 import { CreateCommentInput } from './dto/createComment.input';
 import { DeleteCommentInput } from './dto/deleteComment.input';
@@ -34,7 +35,7 @@ export class CommentService {
 
   async findOneById({ commentId }: { commentId: string }): Promise<Comment> {
     const result = await this.commentRepository.findOne({ where: { id: commentId } });
-    if (!result) throw new NotFoundException('해당 댓글을 찾을 수 없습니다.');
+    if (!result) throw new NotFoundException(ErrorType.comment.notFound.msg);
 
     return result;
   }
@@ -47,21 +48,24 @@ export class CommentService {
       },
       relations: ['board', 'user'],
     });
+    if (!result) throw new NotFoundException(ErrorType.comment.notFound.msg);
     return result;
   }
 
   async update({ commentId, updateCommentInput }: { commentId: string; updateCommentInput: UpdateCommentInput }) {
-    const { email } = updateCommentInput;
+    const { email, comment } = updateCommentInput;
     // 작성한 유저 확인
-    const user = await this.userService.findOne({ email });
+    const checkUser = await this.userService.findOne({ email });
 
     // 댓글 확인
-    const comment = await this.findOneById({ commentId });
+    const checkComment = await this.findOneById({ commentId });
 
     // 수정자와 댓글 작성자 확인
-    if (user.email !== comment.user.email) throw new ConflictException('작성자만 접근 가능');
+    if (checkUser.email !== checkComment.user.email) throw new ForbiddenException(ErrorType.board.forbidden.msg);
+
+    // 댓글 내용 수정
     return await this.commentRepository.save({
-      comment: comment.comment,
+      comment: comment,
     });
   }
 
@@ -70,7 +74,7 @@ export class CommentService {
     await this.userService.findOne({ email: email });
 
     const checkComment = await this.commentRepository.findOne({ where: { id: commentId } });
-    if (!checkComment) throw new NotFoundException('해당 댓글을 찾을 수 없습니다.');
+    if (!checkComment) throw new NotFoundException(ErrorType.comment.notFound.msg);
 
     const result = await this.commentRepository.softDelete({ id: commentId });
     return result.affected ? true : false;
