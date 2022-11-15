@@ -1,10 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail } from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
 
 export class CreateBoardInput {
+  @IsString()
   @ApiProperty({ example: '게시글 제목' })
   title: string;
 
+  @IsString()
   @ApiProperty({ example: '게시글 내용' })
   content: string;
 

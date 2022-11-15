@@ -1,17 +1,22 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { DeleteBoardInput } from 'src/apis/boards/dto/deleteBoard.input';
+import { ApiBody, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CommentService } from './comment.service';
 import { CreateCommentInput } from './dto/createComment.Input';
+import { DeleteCommentInput } from './dto/deleteComment.input';
 import { UpdateCommentInput } from './dto/updateComment.Input';
 import { Comment } from './entities/comment.entity';
 
-@Controller('comment')
+@ApiTags('Comment')
+@Controller()
 export class CommentController {
   constructor(
     private readonly commentService: CommentService, //
   ) {}
 
-  @Post()
+  @Post('comment')
+  @ApiOperation({ description: 'comment를 인자로 받아 댓글을 작성합니다.', summary: '댓글 생성' })
+  @ApiBody({ type: CreateCommentInput })
+  @ApiCreatedResponse({ type: Comment })
   create(@Body() createCommentInput: CreateCommentInput): Promise<Comment> {
     return this.commentService.create({ createCommentInput });
   }
@@ -27,7 +32,7 @@ export class CommentController {
   }
 
   @Delete(':commentId')
-  remove(@Param('commentId') commentId: string, @Body() deleteBoardInput: DeleteBoardInput): Promise<boolean> {
-    return this.commentService.remove({ commentId, deleteBoardInput });
+  remove(@Body() deleteCommentInput: DeleteCommentInput): Promise<boolean> {
+    return this.commentService.remove({ deleteCommentInput });
   }
 }
