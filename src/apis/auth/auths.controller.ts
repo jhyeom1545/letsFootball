@@ -10,7 +10,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AuthService } from './auths.service';
-import { LoginInput } from './dto/login.Input';
+import { LoginInput } from './dto/login.input';
 import { JwtRefreshGuard } from 'src/common/auth/guard/jwtRefresh.guard';
 import { CurrentUser, ICurrentUser } from 'src/common/currentUser';
 import { LoginUserResponse } from 'src/common/type/response.type';

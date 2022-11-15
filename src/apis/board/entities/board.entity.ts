@@ -1,5 +1,4 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Comment } from 'src/apis/comment/entities/comment.entity';
 import { User } from 'src/apis/user/entities/user.entity';
 import {
   Column,
@@ -7,7 +6,6 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';

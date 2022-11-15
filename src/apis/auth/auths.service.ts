@@ -5,7 +5,7 @@ import { Response } from 'express';
 import { ICurrentUser } from 'src/common/currentUser';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
-import { LoginInput } from './dto/login.Input';
+import { LoginInput } from './dto/login.input';
 
 @Injectable()
 export class AuthService {

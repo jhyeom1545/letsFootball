@@ -1,11 +1,11 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BoardService } from 'src/apis/boards/board.service';
+import { BoardService } from 'src/apis/board/board.service';
 import { UserService } from 'src/apis/user/user.service';
 import { Repository } from 'typeorm';
-import { CreateCommentInput } from './dto/createComment.Input';
+import { CreateCommentInput } from './dto/createComment.input';
 import { DeleteCommentInput } from './dto/deleteComment.input';
-import { UpdateCommentInput } from './dto/updateComment.Input';
+import { UpdateCommentInput } from './dto/updateComment.input';
 import { Comment } from './entities/comment.entity';
 
 @Injectable()
