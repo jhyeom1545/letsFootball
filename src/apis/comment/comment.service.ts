@@ -72,6 +72,7 @@ export class CommentService {
     const checkComment = await this.commentRepository.findOne({ where: { id: commentId } });
     if (!checkComment) throw new NotFoundException('해당 댓글을 찾을 수 없습니다.');
 
-    return;
+    const result = await this.commentRepository.softDelete({ id: commentId });
+    return result.affected ? true : false;
   }
 }
