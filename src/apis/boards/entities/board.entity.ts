@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Comment } from 'src/apis/comment/entities/comment.entity';
-import { User } from 'src/apis/users/entities/user.entity';
+import { User } from 'src/apis/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -45,7 +45,4 @@ export class Board {
   })
   @ManyToOne(() => User)
   user: User;
-
-  // @OneToMany(() => Comment, (comment) => comment.board)
-  // comment: Comment[];
 }

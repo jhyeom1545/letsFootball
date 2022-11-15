@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './apis/users/user.module';
-import { AuthModule } from './apis/auths/auths.module';
+import { UserModule } from './apis/user/user.module';
+import { AuthModule } from './apis/auth/auths.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { BoardModule } from './apis/boards/board.module';

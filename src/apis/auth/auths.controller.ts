@@ -10,14 +10,14 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AuthService } from './auths.service';
-import { LoginInput } from './dto/login.Input.dto';
+import { LoginInput } from './dto/login.Input';
 import { JwtRefreshGuard } from 'src/common/auth/guard/jwtRefresh.guard';
 import { CurrentUser, ICurrentUser } from 'src/common/currentUser';
 import { LoginUserResponse } from 'src/common/type/response.type';
 import { Error403, Error500, UserError404 } from 'src/common/type/error.type';
 
 @ApiTags('Auth')
-@Controller()
+@Controller('api/')
 export class AuthController {
   constructor(
     private readonly authService: AuthService, //
