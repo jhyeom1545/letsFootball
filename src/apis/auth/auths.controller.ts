@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Res, UseGuards, ValidationPipe } from '@nestjs/common';
 import { Response } from 'express';
 import {
   ApiBody,
@@ -30,7 +30,7 @@ export class AuthController {
   @ApiNotFoundResponse({ type: UserError404, description: '조회하는 이메일이 없을 때' })
   @ApiForbiddenResponse({ type: Error403, description: '비밀번호가 틀렸을 때' })
   logoin(
-    @Body() loginInput: LoginInput,
+    @Body(ValidationPipe) loginInput: LoginInput,
     @Res({ passthrough: true }) res: Response, //
   ) {
     return this.authService.login({ loginInput, res });
