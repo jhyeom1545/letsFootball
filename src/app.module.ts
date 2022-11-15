@@ -4,8 +4,7 @@ import { AuthModule } from './apis/auths/auths.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { BoardModule } from './apis/boards/board.module';
-import { LikeModule } from './apis/likes/like.module';
-import { CommentModule } from './comment/comment.module';
+import { CommentModule } from './apis/comment/comment.module';
 
 @Module({
   imports: [
@@ -13,7 +12,6 @@ import { CommentModule } from './comment/comment.module';
     BoardModule,
     CommentModule,
     UserModule,
-    LikeModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -24,13 +22,11 @@ import { CommentModule } from './comment/comment.module';
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DATABASE,
-      entities: [__dirname + '/apis/**/*.entity.*'], // 모델
+      entities: [__dirname + '/apis/**/**/*.entity.*'], // 모델
       synchronize: true,
       logging: true,
       retryAttempts: 20,
-      timezone: 'Z',
     }),
-    CommentModule,
   ],
 })
 export class AppModule {}

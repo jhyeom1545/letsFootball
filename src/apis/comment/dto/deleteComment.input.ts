@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateCommentInput {
+export class DeleteCommentInput {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
@@ -12,13 +12,9 @@ export class CreateCommentInput {
 
   @IsString()
   @IsNotEmpty()
-  boardId: string;
-
-  @IsString()
-  @IsNotEmpty()
   @ApiProperty({
-    description: '댓글 내용',
-    example: '댓글 내용 예시',
+    description: '댓글 ID',
+    example: 'uuid',
   })
-  comment: string;
+  commentId: string;
 }

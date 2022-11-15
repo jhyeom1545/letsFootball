@@ -12,7 +12,8 @@ export class CreateCommentInput {
 
   @IsString()
   @IsNotEmpty()
-  board: string;
+  @ApiProperty({ example: '99e306da-789d-45f4-a228-f33cfab3e301' })
+  boardId: string;
 
   @IsString()
   @IsNotEmpty()
