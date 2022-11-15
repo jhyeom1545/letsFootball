@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BoardService } from 'src/apis/boards/board.service';
-import { UserService } from 'src/apis/users/user.service';
+import { UserService } from 'src/apis/user/user.service';
 import { Repository } from 'typeorm';
 import { CreateCommentInput } from './dto/createComment.Input';
 import { DeleteCommentInput } from './dto/deleteComment.input';

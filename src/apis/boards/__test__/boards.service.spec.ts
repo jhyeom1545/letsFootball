@@ -1,7 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { User } from 'src/apis/users/entities/user.entity';
-import { UserService } from 'src/apis/users/user.service';
+import { User } from 'src/apis/user/entities/user.entity';
+import { UserService } from 'src/apis/user/user.service';
 import { ErrorType } from 'src/common/type/message.type';
 import { Repository } from 'typeorm';
 import { BoardController } from '../board.controller';

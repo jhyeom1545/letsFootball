@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auths.service';
 import { AuthController } from './auths.controller';
-import { UserService } from '../users/user.service';
+import { UserService } from '../user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../users/entities/user.entity';
+import { User } from '../user/entities/user.entity';
 import { JwtAccessStrategy } from 'src/common/auth/strategy/jwtAccess.strategy';
 import { JwtRefreshStrategy } from 'src/common/auth/strategy/jwtRefresh.strategy';
 
