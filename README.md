@@ -25,11 +25,13 @@
 <br>
   
 ## 실행 방법
+---
+
 ```
 git clone https://github.com/jhyeom1545/letsFootball.git
 ```
 
-#### letsFootball
+#### ./letsFootball
 
 ```
 docker compose up --build
@@ -100,55 +102,55 @@ PascalCase 사용
 
 ### **Auth**
 
-|  METHOD  |                     URL                      |                           PARAMETER                           |       RETURN        |    DESCRIPTION     |
-| :------: | :------------------------------------------: | :-----------------------------------------------------------: | :-----------------: | :----------------: |
-| **POST** |       http://localhost:3000/api/login        | [loginInput](./letsfootball/src/apis/auth/dto/login.input.ts) | String(액세스 토큰) |       로그인       |
-| **POST** | http://localhost:3000/api/restoreAccessToken |                               -                               | String(액세스 토큰) | 액세스 토큰 재발급 |
+|  METHOD  |                     URL                      |                    PARAMETER                     |       RETURN        |    DESCRIPTION     |
+| :------: | :------------------------------------------: | :----------------------------------------------: | :-----------------: | :----------------: |
+| **POST** |       http://localhost:3000/api/login        | [loginInput](./src/apis/auth/dto/login.input.ts) | String(액세스 토큰) |       로그인       |
+| **POST** | http://localhost:3000/api/restoreAccessToken |                        -                         | String(액세스 토큰) | 액세스 토큰 재발급 |
 
 <br>
 
 ### **Board**
 
-|   METHOD   |                  URL                   |                                     PARAMETER                                      |                               RETURN                                |   DESCRIPTION    |
-| :--------: | :------------------------------------: | :--------------------------------------------------------------------------------: | :-----------------------------------------------------------------: | :--------------: |
-|  **POST**  |    http://localhost:3000/api/board     |    [CreateBoardInput](./letsfootball/src/apis/comment/dto/createBoard.input.ts)    |  [Board](./letsfootball/src/apis/comment/entities/board.entity.ts)  |  게시글을 생성   |
-|  **GET**   | http://localhost:3000/api/board/{page} |                                        page                                        | [Board[]](./letsfootball/src/apis/comment/entities/board.entity.ts) | 게시글 전체 조회 |
-|  **GET**   |  http://localhost:3000/api/board/{id}  |                                         id                                         |  [Board](./letsfootball/src/apis/comment/entities/board.entity.ts)  |   게시글 조회    |
-| **PATCH**  |  http://localhost:3000/api/board/{id}  |    [UpdateBoardInput](./letsfootball/src/apis/comment/dto/updateBoard.input.ts)    |  [Board](./letsfootball/src/apis/comment/entities/board.entity.ts)  |   게시글 수정    |
-| **DELETE** |  http://localhost:3000/api/board/{id}  | [DeleteBoardInput](./letsfootball/src/apis/comment/dto/deleteBoard.input.input.ts) |                               boolean                               |  게시글을 삭제   |
+|   METHOD   |                  URL                   |                               PARAMETER                               |                         RETURN                         |   DESCRIPTION    |
+| :--------: | :------------------------------------: | :-------------------------------------------------------------------: | :----------------------------------------------------: | :--------------: |
+|  **POST**  |    http://localhost:3000/api/board     |    [CreateBoardInput](./src/apis/comment/dto/createBoard.input.ts)    |  [Board](./src/apis/comment/entities/board.entity.ts)  |  게시글을 생성   |
+|  **GET**   | http://localhost:3000/api/board/{page} |                                 page                                  | [Board[]](./src/apis/comment/entities/board.entity.ts) | 게시글 전체 조회 |
+|  **GET**   |  http://localhost:3000/api/board/{id}  |                                  id                                   |  [Board](./src/apis/comment/entities/board.entity.ts)  |   게시글 조회    |
+| **PATCH**  |  http://localhost:3000/api/board/{id}  |    [UpdateBoardInput](./src/apis/comment/dto/updateBoard.input.ts)    |  [Board](./src/apis/comment/entities/board.entity.ts)  |   게시글 수정    |
+| **DELETE** |  http://localhost:3000/api/board/{id}  | [DeleteBoardInput](./src/apis/comment/dto/deleteBoard.input.input.ts) |                        boolean                         |  게시글을 삭제   |
 
 <br>
 
 ### **Comment**
 
-|   METHOD   |                      URL                      |                                    PARAMETER                                     |                                 RETURN                                  |       DESCRIPTION       |
-| :--------: | :-------------------------------------------: | :------------------------------------------------------------------------------: | :---------------------------------------------------------------------: | :---------------------: |
-|  **POST**  |       http://localhost:3000/api/comment       |  [CreateFeedInput](./letsfootball/src/apis/comment/dto/createComment.input.ts)   |  [Comment](./letsfootball/src/apis/comment/entities/comment.entity.ts)  |        댓글 생성        |
-|  **GET**   |  http://localhost:3000/api/comment/{boardId}  |                                     boardId                                      | [Comment[]](./letsfootball/src/apis/comment/entities/comment.entity.ts) | 게시글의 전체 댓글 조회 |
-|  **GET**   | http://localhost:3000/api/comment/{commentId} |                                    commentId                                     |  [Comment](./letsfootball/src/apis/comment/entities/comment.entity.ts)  |        댓글 조회        |
-| **PATCH**  | http://localhost:3000/api/comment/{commentId} |  [UpdateCommentInput](./letsfootball/src/apis/comment/dto/updateFeed.input.ts)   |  [Comment](./letsfootball/src/apis/comment/entities/comment.entity.ts)  |        댓글 수정        |
-| **DELETE** | http://localhost:3000/api/comment/{commentId} | [DeleteCommentInput](./letsfootball/src/apis/comment/dto/deleteComment.input.ts) |                                 boolean                                 |        댓글 삭제        |
+|   METHOD   |                      URL                      |                              PARAMETER                              |                           RETURN                           |       DESCRIPTION       |
+| :--------: | :-------------------------------------------: | :-----------------------------------------------------------------: | :--------------------------------------------------------: | :---------------------: |
+|  **POST**  |       http://localhost:3000/api/comment       |  [CreateFeedInput](./src/apis/comment/dto/createComment.input.ts)   |  [Comment](./src/apis/comment/entities/comment.entity.ts)  |        댓글 생성        |
+|  **GET**   |  http://localhost:3000/api/comment/{boardId}  |                               boardId                               | [Comment[]](./src/apis/comment/entities/comment.entity.ts) | 게시글의 전체 댓글 조회 |
+|  **GET**   | http://localhost:3000/api/comment/{commentId} |                              commentId                              |  [Comment](./src/apis/comment/entities/comment.entity.ts)  |        댓글 조회        |
+| **PATCH**  | http://localhost:3000/api/comment/{commentId} |  [UpdateCommentInput](./src/apis/comment/dto/updateFeed.input.ts)   |  [Comment](./src/apis/comment/entities/comment.entity.ts)  |        댓글 수정        |
+| **DELETE** | http://localhost:3000/api/comment/{commentId} | [DeleteCommentInput](./src/apis/comment/dto/deleteComment.input.ts) |                          boolean                           |        댓글 삭제        |
 
 <br>
 
 ### **User**
 
-|   METHOD   |              URL               |                                PARAMETER                                |                           RETURN                           |  DESCRIPTION   |
-| :--------: | :----------------------------: | :---------------------------------------------------------------------: | :--------------------------------------------------------: | :------------: |
-|  **POST**  | http://localhost:3000/api/user | [CreateUserInput](./letsfootball/src/apis/auth/dto/createUser.input.ts) | [User](letsfootball/src/apis/user/entities/user.entity.ts) | 유저 회원 가입 |
-|  **GET**   | http://localhost:3000/api/user |                                  email                                  | [User](letsfootball/src/apis/user/entities/user.entity.ts) |   유저 조회    |
-| **PATCH**  | http://localhost:3000/api/user | [UpdateUserInput](./letsfootball/src/apis/user/dto/updateUser.input.ts) | [User](letsfootball/src/apis/user/entities/user.entity.ts) | 유저 정보 수정 |
-| **DELETE** | http://localhost:3000/api/user |                                  email                                  |                          boolean                           | 유저 회원 탈퇴 |
+|   METHOD   |              URL               |                         PARAMETER                          |                    RETURN                     |  DESCRIPTION   |
+| :--------: | :----------------------------: | :--------------------------------------------------------: | :-------------------------------------------: | :------------: |
+|  **POST**  | http://localhost:3000/api/user | [CreateUserInput](./src/apis/auth/dto/createUser.input.ts) | [User]/src/apis/user/entities/user.entity.ts) | 유저 회원 가입 |
+|  **GET**   | http://localhost:3000/api/user |                           email                            | [User]/src/apis/user/entities/user.entity.ts) |   유저 조회    |
+| **PATCH**  | http://localhost:3000/api/user | [UpdateUserInput](./src/apis/user/dto/updateUser.input.ts) | [User]/src/apis/user/entities/user.entity.ts) | 유저 정보 수정 |
+| **DELETE** | http://localhost:3000/api/user |                           email                            |                    boolean                    | 유저 회원 탈퇴 |
 
 <br>
 
 ## 테스트 코드
 
-### [user.service 테스트 코드 작성](letsFootball/src/apis/user/**test**/users.service.spec.ts)
-
-### [board.service 테스트 코드 작성](letsFootball/src/apis/board/**test**/boards.service.spec.ts)
-
 ---
+
+### [user.service 테스트 코드](letsFootball/src/apis/user/**test**/users.service.spec.ts)
+
+### [board.service 테스트 코드](letsFootball/src/apis/board/**test**/boards.service.spec.ts)
 
 <br>
 
@@ -168,9 +170,9 @@ PascalCase 사용
 
 ## ERD
 
-<p><img src="https://user-images.githubusercontent.com/105836661/201884884-7309ca8a-5eee-455f-87e6-6f7d86fe6e65.png"width=500></p>
-
 ---
+
+<p><img src="https://user-images.githubusercontent.com/105836661/201884884-7309ca8a-5eee-455f-87e6-6f7d86fe6e65.png"width=500></p>
 
 <br>
 
@@ -183,11 +185,11 @@ PascalCase 사용
 
 # DB config
 
-DATABASE_HOST=letsfootball-database
+DATABASE_HOST-database
 DATABASE_PORT=3306
 DATABASE_USERNAME=root
 DATABASE_PASSWORD=1545
-DATABASE_DATABASE=letsfootball
+DATABASE_DATABASE
 
 # JWT config
 
