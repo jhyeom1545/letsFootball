@@ -148,9 +148,9 @@ PascalCase 사용
 
 ---
 
-### [user.service 테스트 코드](letsFootball/src/apis/user/__test__/users.service.spec.ts)
+### [user.service 테스트 코드](./src/apis/user/__test__/users.service.spec.ts)
 
-### [board.service 테스트 코드](letsFootball/src/apis/board/__test__/boards.service.spec.ts)
+### [board.service 테스트 코드](./src/apis/board/__test__/boards.service.spec.ts)
 
 <br>
 
