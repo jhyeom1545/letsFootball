@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseGuards } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiForbiddenResponse,
@@ -30,6 +31,7 @@ export class CommentController {
    */
   @Post('comment')
   @UseGuards(JwtAccessGuard)
+  @ApiBearerAuth('access-token')
   @ApiOperation({ description: 'comment를 인자로 받아 댓글을 작성합니다.', summary: '댓글 생성' })
   @ApiBody({ type: CreateCommentInput })
   @ApiCreatedResponse({ type: Comment, description: '댓글 생성 성공' })
@@ -74,6 +76,7 @@ export class CommentController {
    */
   @Patch('comment/:commentId')
   @UseGuards(JwtAccessGuard)
+  @ApiBearerAuth('access-token')
   @ApiBody({ type: UpdateCommentInput })
   @ApiOperation({ description: 'commentId를 인자로 받아 댓글을 수정합니다.', summary: '댓글 수정' })
   @ApiOkResponse({ type: Comment, description: '댓글이 수정되었습니다.' })
@@ -93,6 +96,7 @@ export class CommentController {
    */
   @Delete('comment/:commentId')
   @UseGuards(JwtAccessGuard)
+  @ApiBearerAuth('access-token')
   @ApiOkResponse({ type: Boolean, description: '댓글이 삭제 되었습니다.' })
   @ApiNotFoundResponse({ type: Comment404, description: '해당 댓글을 찾을 수 없을 때' })
   @ApiOperation({ description: 'commentId를 인자로 받아 댓글을 삭제합니다.', summary: '댓글 삭제' })

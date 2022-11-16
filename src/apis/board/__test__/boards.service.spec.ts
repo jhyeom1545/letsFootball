@@ -189,6 +189,7 @@ describe('BoardService', () => {
     });
     it('입력받은 email이 존재하지 않는다면 예외를 발생시킵니다..', async () => {
       await expect(async () => {
+        // jest.spyOn(userRepository, 'findOne').mockResolvedValue(undefined);
         jest.spyOn(userService, 'findOne').mockResolvedValue(undefined);
         await boardService.remove({ deleteBoardInput });
       }).rejects.toThrowError(new NotFoundException(ErrorType.user.notFound.msg));
